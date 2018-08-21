@@ -30,7 +30,8 @@ namespace TakeItEasy
 		{
 			base.OnPaint(e);
 
-			//gameField.Draw(e.Graphics, ClientSize);
+			gameField.Draw(e.Graphics, ClientSize);
+			return;
 
 			RenderEngine.DrawGameField(e.Graphics, ClientSize, model);
 

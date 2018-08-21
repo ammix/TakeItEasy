@@ -10,13 +10,14 @@ namespace TakeItEasy
 
 		public GameField()
 		{
-			var color = Color.DeepPink;
+			//var color = Color.DeepPink;
+			var color = Color.DeepSkyBlue;
 			var borderColor = Color.LightPink;
 
 			hexagons = new List<Hexagon>();
 			for (var i = 0; i < 19; i++)
 			{
-				var hexagon = new Hexagon(new PointF(), 0);
+				var hexagon = new TileHexagon(new PointF(), 0);
 				hexagon.Color = color;
 				hexagon.BorderColor = borderColor;
 				hexagons.Add(hexagon);
