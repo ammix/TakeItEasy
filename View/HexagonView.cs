@@ -2,7 +2,7 @@
 
 namespace TakeItEasy
 {
-	public struct FieldHexagonView
+	public struct HexagonView
 	{
 		public float Edge { get; set; }
 		public PointF Center { get; set; }
@@ -10,7 +10,7 @@ namespace TakeItEasy
 		public Color Color { get; set; }
 		public float BorderThickness { get; set; } // ratio border to edge
 
-		public FieldHexagonView(float edge, PointF center)
+		public HexagonView(float edge, PointF center)
 		{
 			Edge = edge;
 			Center = center;

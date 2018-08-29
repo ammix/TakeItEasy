@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 
 namespace TakeItEasy
 {
-	class Hexagon
+	public class Hexagon
 	{
 		public float Edge { get; set; }
 		public PointF Center { get; set; }
