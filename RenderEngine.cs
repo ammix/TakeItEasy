@@ -2,87 +2,93 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using TakeItEasy.Model;
 
 namespace TakeItEasy
 {
 	public static class RenderEngine
 	{
-		private static readonly float K = (float) Math.Sqrt(3) / 2;
+		private static readonly float sqrt3 = (float) Math.Sqrt(3);
+
+		public static void DrawGame(Graphics g, SizeF fieldSize, Game game)
+		{
+			
+		}
+
+		public static void DrawGameField(Graphics g, SizeF fieldSize, Game game)
+		{
+			//var center = new PointF(fieldSize.Width / 2f, fieldSize.Height / 2f);
+			//var a = Math.Min(fieldSize.Width, fieldSize.Height) / 9;
+
+			//var c = new SizeF(center);
+
+			//var hexagons = new List<HexagonView>
+			//{
+			//	new HexagonView(a, new PointF(3 * a, sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(3 * a, 0) + c),
+			//	new HexagonView(a, new PointF(3 * a, -sqrt3 * a) + c),
+
+			//	new HexagonView(a, new PointF(1.5f * a, 1.5f * sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(1.5f * a, 0.5f * sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(1.5f * a, -0.5f * sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(1.5f * a, -1.5f * sqrt3 * a) + c),
+
+			//	new HexagonView(a, new PointF(0, 2 * sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(0, sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(0, 0) + c),
+			//	new HexagonView(a, new PointF(0, -sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(0, -2 * sqrt3 * a) + c),
+
+			//	new HexagonView(a, new PointF(- 1.5f * a, 1.5f * sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(- 1.5f * a, 0.5f * sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(- 1.5f * a, -0.5f * sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(- 1.5f * a, -1.5f * sqrt3 * a) + c),
+
+			//	new HexagonView(a, new PointF(-3 * a, sqrt3 * a) + c),
+			//	new HexagonView(a, new PointF(-3 * a, 0) + c),
+			//	new HexagonView(a, new PointF(-3 * a, -sqrt3 * a) + c)
+			//};
+
+			g.Clear(Color.Black);
+			//foreach (var hx in hexagons)
+			//	DrawHexagon(g, hx);
+			for (var i=0; i<19; i++)
+				if (game.Tiles[i] == null)
+					DrawHexagon(g, hexagons[i]);
+				else
+				{
+					var hexagonView = hexagons[i];
+					hexagonView.Color = Color.DeepSkyBlue;
+					hexagonView.BorderThickness = 0.01f;
+					hexagonView.BorderColor = Color.Black;
+
+					var tileHexagonView = new TileHexagonView(hexagonView, game.Tiles[i].Value);
+					DrawTileHexagon(g, tileHexagonView);
+				}
+		}
 
 		public static void DrawHexagon(Graphics g, HexagonView hx)
 		{
-			var p1 = new PointF(hx.Center.X + hx.Edge / 2f, hx.Center.Y + K * hx.Edge);
-			var p2 = new PointF(hx.Center.X + hx.Edge, hx.Center.Y);
-			var p3 = new PointF(hx.Center.X + hx.Edge / 2f, hx.Center.Y - K * hx.Edge);
-			var p4 = new PointF(hx.Center.X - hx.Edge / 2f, hx.Center.Y - K * hx.Edge);
-			var p5 = new PointF(hx.Center.X - hx.Edge, hx.Center.Y);
-			var p6 = new PointF(hx.Center.X - hx.Edge / 2f, hx.Center.Y + K * hx.Edge);
-
-			var path = new GraphicsPath();
-			path.AddLines(new[] { p1, p2, p3, p4, p5, p6, p1 });
-
-			g.FillPath(new SolidBrush(hx.Color), path);
-			g.DrawPath(new Pen(hx.BorderColor, hx.BorderThickness * hx.Edge) { EndCap = LineCap.Round }, path);
+			g.FillPath(new SolidBrush(hx.Color), hx.GraphicsPath);
+			g.DrawPath(new Pen(hx.BorderColor, hx.BorderThickness * hx.Edge) { EndCap = LineCap.Round }, hx.GraphicsPath);
 		}
 
 		public static void DrawTileHexagon(Graphics g, TileHexagonView hx)
 		{
 			DrawHexagon(g, hx.HexagonView);
 
-			var a = hx.HexagonView.Edge;
-			var b = a * 15 / 62;
-			var center = hx.HexagonView.Center;
-            var sqrt3 = (float)Math.Sqrt(3);
-			var c = new SizeF(center);
-			var fontSize = b;
-
-			var p7 = new PointF(b / 2f, a * sqrt3 / 2);
-			var p8 = new PointF(a * 3 / 4 - b / 4, a * sqrt3 / 4 + b * sqrt3 / 4);
-			var p9 = new PointF(a * 3 / 4 + b / 4, a * sqrt3 / 4 - b * sqrt3 / 4);
-			var p10 = new PointF(a * 3 / 4 + b / 4, -a * sqrt3 / 4 + b * sqrt3 / 4);
-			var p11 = new PointF(a * 3 / 4 - b / 4, -a * sqrt3 / 4 - b * sqrt3 / 4);
-			var p12 = new PointF(b / 2f, -a * sqrt3 / 2);
-			var p1 = new PointF(-b / 2f, -a * sqrt3 / 2);
-			var p2 = new PointF(-a * 3 / 4 + b / 4, -a * sqrt3 / 4 - b * sqrt3 / 4);
-			var p3 = new PointF(-a * 3 / 4 - b / 4, -a * sqrt3 / 4 + b * sqrt3 / 4);
-			var p4 = new PointF(-a * 3 / 4 - b / 4, a * sqrt3 / 4 - b * sqrt3 / 4);
-			var p5 = new PointF(-a * 3 / 4 + b / 4, a * sqrt3 / 4 + b * sqrt3 / 4);
-			var p6 = new PointF(-b / 2f, a * sqrt3 / 2);
-
-			var barTop = new GraphicsPath();
-			barTop.AddLines(new[] { p12 + c, p1 + c, p6 + c, p7 + c, p12 + c });
-
-			var barLeft = new GraphicsPath();
-			//barLeft.AddLines(new[] { p2 + c, p3 + c, p8 + c, p9 + c, p2 + c });
-			barLeft.AddLines(new[] { p8 + c, p9 + c, p2 + c, p3 + c, p8 + c });
-
-			var barRight = new GraphicsPath();
-			barRight.AddLines(new[] { p4 + c, p5 + c, p10 + c, p11 + c, p4 + c });
-
-			for (var i = 1; i <= 3; i++)
+			for (var i = 0; i < 3; i++)
 			{
-				var number = GetNumber(i, hx.TileModel.Top, hx.TileModel.Right, hx.TileModel.Left);
-				var bar = GetBar(number, barTop, barLeft, barRight);
+				var number = GetNumber(i, hx.TileModel);
+				var bar = GetBar(number, hx.HexagonView);
 				var color = GetBarColor(number);
-				DrawBar(g, bar, color); // 7->orient+color
+
+				DrawBar(g, bar, color);
 				DrawNumber(g, number, bar);
 			}
-
-			//g.DrawString(hx.TileModel.Left.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - p4.X + b / 5, center.Y - p4.Y - b / 2);
-			//g.DrawString(hx.TileModel.Right.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - p9.X - b * 1.25f, center.Y - p9.Y - b / 2);
-			//g.DrawString(hx.TileModel.Top.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - b / 1.75f, center.Y - a * sqrt3 / 2);
-
-			/*
-			//var drawRect = new RectangleF(center, new SizeF(0, 0));
-			var drawFormat = new StringFormat();
-			drawFormat.Alignment = StringAlignment.Center;
-			drawFormat.LineAlignment = StringAlignment.Center;
-
-			g.DrawString("0", new Font("Arial", b, FontStyle.Regular), new SolidBrush(Color.Black), center.X, center.Y - (a * sqrt3 / 2) + fontSize, drawFormat);
-			*/
 		}
 
-		public static void DrawNumber(Graphics g, int number, GraphicsPath bar)
+		private static void DrawNumber(Graphics g, int number, GraphicsPath bar)
 		{
 			var p1 = bar.PathPoints[0];
 			var p2 = bar.PathPoints[1];
@@ -111,21 +117,48 @@ namespace TakeItEasy
 			g.DrawString(number.ToString(), font, new SolidBrush(Color.Black), pNumber, drawFormat);
 		}
 
-		public static void DrawBar(Graphics g, GraphicsPath bar, Color color)
+		private static void DrawBar(Graphics g, GraphicsPath bar, Color color)
 		{
 			g.FillPath(new SolidBrush(color), bar);
 			g.DrawPath(new Pen(Color.Black), bar);
 		}
 
-		private static int GetNumber(int order, int n1, int n2, int n3)
+		private static int GetNumber(int order, TileModel model)
 		{
-			var list = new List<int> {n1, n2, n3};
+			var list = new List<int> {model.Left, model.Top, model.Right};
 			list.Sort();
-			return list[order - 1];
+			return list[order];
 		}
 
-		private static GraphicsPath GetBar(int number, GraphicsPath barTop, GraphicsPath barLeft, GraphicsPath barRight)
+		private static GraphicsPath GetBar(int number, HexagonView hx)
 		{
+			var a = hx.Edge;
+			var b = a * 15 / 62;
+			var center = hx.Center;
+			var c = new SizeF(center);
+
+			var p7 = new PointF(b / 2f, a * sqrt3 / 2) + c;
+			var p8 = new PointF(a * 3 / 4 - b / 4, a * sqrt3 / 4 + b * sqrt3 / 4) + c;
+			var p9 = new PointF(a * 3 / 4 + b / 4, a * sqrt3 / 4 - b * sqrt3 / 4) + c;
+			var p10 = new PointF(a * 3 / 4 + b / 4, -a * sqrt3 / 4 + b * sqrt3 / 4) + c;
+			var p11 = new PointF(a * 3 / 4 - b / 4, -a * sqrt3 / 4 - b * sqrt3 / 4) + c;
+			var p12 = new PointF(b / 2f, -a * sqrt3 / 2) + c;
+			var p1 = new PointF(-b / 2f, -a * sqrt3 / 2) + c;
+			var p2 = new PointF(-a * 3 / 4 + b / 4, -a * sqrt3 / 4 - b * sqrt3 / 4) + c;
+			var p3 = new PointF(-a * 3 / 4 - b / 4, -a * sqrt3 / 4 + b * sqrt3 / 4) + c;
+			var p4 = new PointF(-a * 3 / 4 - b / 4, a * sqrt3 / 4 - b * sqrt3 / 4) + c;
+			var p5 = new PointF(-a * 3 / 4 + b / 4, a * sqrt3 / 4 + b * sqrt3 / 4) + c;
+			var p6 = new PointF(-b / 2f, a * sqrt3 / 2) + c;
+
+			var barTop = new GraphicsPath();
+			barTop.AddLines(new[] { p12, p1, p6, p7, p12 });
+
+			var barLeft = new GraphicsPath();
+			barLeft.AddLines(new[] { p8, p9, p2, p3, p8 });
+
+			var barRight = new GraphicsPath();
+			barRight.AddLines(new[] { p4, p5, p10, p11, p4 });
+
 			switch (number)
 			{
 				case 1:
@@ -156,44 +189,6 @@ namespace TakeItEasy
 				case 9: return Color.Yellow;
 				default: return Color.White;
 			}
-		}
-
-		public static void DrawGameField(Graphics g, SizeF fieldSize, List<bool> model)
-		{
-			var c = new PointF(fieldSize.Width / 2f, fieldSize.Height / 2f);
-			var a = Math.Min(fieldSize.Width, fieldSize.Height) / 9;
-			var dy = (float) Math.Sqrt(3) * a;
-
-			var hexagons = new List<HexagonView>
-			{
-				new HexagonView(a, new PointF(c.X + 3 * a, c.Y + dy)),
-				new HexagonView(a, new PointF(c.X + 3 * a, c.Y)),
-				new HexagonView(a, new PointF(c.X + 3 * a, c.Y - dy)),
-
-				new HexagonView(a, new PointF(c.X + 1.5f * a, c.Y + 1.5f * dy)),
-				new HexagonView(a, new PointF(c.X + 1.5f * a, c.Y + 0.5f * dy)),
-				new HexagonView(a, new PointF(c.X + 1.5f * a, c.Y - 0.5f * dy)),
-				new HexagonView(a, new PointF(c.X + 1.5f * a, c.Y - 1.5f * dy)),
-
-				new HexagonView(a, new PointF(c.X, c.Y + 2 * dy)),
-				new HexagonView(a, new PointF(c.X, c.Y + dy)),
-				new HexagonView(a, new PointF(c.X, c.Y)),
-				new HexagonView(a, new PointF(c.X, c.Y - dy)),
-				new HexagonView(a, new PointF(c.X, c.Y - 2 * dy)),
-
-				new HexagonView(a, new PointF(c.X - 1.5f * a, c.Y + 1.5f * dy)),
-				new HexagonView(a, new PointF(c.X - 1.5f * a, c.Y + 0.5f * dy)),
-				new HexagonView(a, new PointF(c.X - 1.5f * a, c.Y - 0.5f * dy)),
-				new HexagonView(a, new PointF(c.X - 1.5f * a, c.Y - 1.5f * dy)),
-
-				new HexagonView(a, new PointF(c.X - 3 * a, c.Y + dy)),
-				new HexagonView(a, new PointF(c.X - 3 * a, c.Y)),
-				new HexagonView(a, new PointF(c.X - 3 * a, c.Y - dy))
-			};
-
-			g.Clear(Color.Black);
-			foreach (var hx in hexagons)
-				DrawHexagon(g, hx);
 		}
 	}
 }
