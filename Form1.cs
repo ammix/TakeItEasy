@@ -45,7 +45,9 @@ namespace TakeItEasy
 			//hexagon.Draw(e.Graphics);
 
 			var hexagonView = new HexagonView(a, c);
-			hexagonView.Color = Color.White;
+			hexagonView.Color = Color.DeepSkyBlue;
+			hexagonView.BorderThickness = 0.01f;
+			hexagonView.BorderColor = Color.Black;
 
 			var tileModel = new TileModel(9, 8, 7);
 

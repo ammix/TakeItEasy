@@ -27,6 +27,8 @@ namespace TakeItEasy
 
 		public static void DrawTileHexagon(Graphics g, TileHexagonView hx)
 		{
+			DrawHexagon(g, hx.HexagonView);
+
 			var a = hx.HexagonView.Edge;
 			var b = a * 15 / 62;
 			var center = hx.HexagonView.Center;
@@ -34,48 +36,41 @@ namespace TakeItEasy
 			var c = new SizeF(center);
 			var fontSize = b;
 
-			var p1 = new PointF(b / 2f, a * sqrt3 / 2);
-			var p2 = new PointF(a * 3 / 4 - b / 4, a * sqrt3 / 4 + b * sqrt3 / 4);
-			var p3 = new PointF(a * 3 / 4 + b / 4, a * sqrt3 / 4 - b * sqrt3 / 4);
-			var p4 = new PointF(a * 3 / 4 + b / 4, -a * sqrt3 / 4 + b * sqrt3 / 4);
-			var p5 = new PointF(a * 3 / 4 - b / 4, -a * sqrt3 / 4 - b * sqrt3 / 4);
-			var p6 = new PointF(b / 2f, -a * sqrt3 / 2);
-			var p7 = new PointF(-b / 2f, -a * sqrt3 / 2);
-			var p8 = new PointF(-a * 3 / 4 + b / 4, -a * sqrt3 / 4 - b * sqrt3 / 4);
-			var p9 = new PointF(-a * 3 / 4 - b / 4, -a * sqrt3 / 4 + b * sqrt3 / 4);
-			var p10 = new PointF(-a * 3 / 4 - b / 4, a * sqrt3 / 4 - b * sqrt3 / 4);
-			var p11 = new PointF(-a * 3 / 4 + b / 4, a * sqrt3 / 4 + b * sqrt3 / 4);
-			var p12 = new PointF(-b / 2f, a * sqrt3 / 2);
+			var p7 = new PointF(b / 2f, a * sqrt3 / 2);
+			var p8 = new PointF(a * 3 / 4 - b / 4, a * sqrt3 / 4 + b * sqrt3 / 4);
+			var p9 = new PointF(a * 3 / 4 + b / 4, a * sqrt3 / 4 - b * sqrt3 / 4);
+			var p10 = new PointF(a * 3 / 4 + b / 4, -a * sqrt3 / 4 + b * sqrt3 / 4);
+			var p11 = new PointF(a * 3 / 4 - b / 4, -a * sqrt3 / 4 - b * sqrt3 / 4);
+			var p12 = new PointF(b / 2f, -a * sqrt3 / 2);
+			var p1 = new PointF(-b / 2f, -a * sqrt3 / 2);
+			var p2 = new PointF(-a * 3 / 4 + b / 4, -a * sqrt3 / 4 - b * sqrt3 / 4);
+			var p3 = new PointF(-a * 3 / 4 - b / 4, -a * sqrt3 / 4 + b * sqrt3 / 4);
+			var p4 = new PointF(-a * 3 / 4 - b / 4, a * sqrt3 / 4 - b * sqrt3 / 4);
+			var p5 = new PointF(-a * 3 / 4 + b / 4, a * sqrt3 / 4 + b * sqrt3 / 4);
+			var p6 = new PointF(-b / 2f, a * sqrt3 / 2);
 
 			var barTop = new GraphicsPath();
 			barTop.AddLines(new[] { p12 + c, p1 + c, p6 + c, p7 + c, p12 + c });
 
 			var barLeft = new GraphicsPath();
-			barLeft.AddLines(new[] { p2 + c, p3 + c, p8 + c, p9 + c, p2 + c });
+			//barLeft.AddLines(new[] { p2 + c, p3 + c, p8 + c, p9 + c, p2 + c });
+			barLeft.AddLines(new[] { p8 + c, p9 + c, p2 + c, p3 + c, p8 + c });
 
 			var barRight = new GraphicsPath();
 			barRight.AddLines(new[] { p4 + c, p5 + c, p10 + c, p11 + c, p4 + c });
 
-			//DrawBar(hx.TileModel.Number1); // 7->orient+color
 			for (var i = 1; i <= 3; i++)
 			{
 				var number = GetNumber(i, hx.TileModel.Top, hx.TileModel.Right, hx.TileModel.Left);
 				var bar = GetBar(number, barTop, barLeft, barRight);
 				var color = GetBarColor(number);
 				DrawBar(g, bar, color); // 7->orient+color
+				DrawNumber(g, number, bar);
 			}
 
-			//g.FillPath(new SolidBrush(Color.LimeGreen), bar3);
-			//g.DrawPath(new Pen(Color.Black), bar3);
-			g.DrawString(hx.TileModel.Left.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - p4.X + b / 5, center.Y - p4.Y - b / 2);
-
-			//g.FillPath(new SolidBrush(Color.Orange), bar2);
-			//g.DrawPath(new Pen(Color.Black), bar2);
-			g.DrawString(hx.TileModel.Right.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - p9.X - b * 1.25f, center.Y - p9.Y - b / 2);
-
-			//g.FillPath(new SolidBrush(Color.Yellow), bar1);
-			//g.DrawPath(new Pen(Color.Black), bar1);
-			g.DrawString(hx.TileModel.Top.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - b / 1.75f, center.Y - a * sqrt3 / 2);
+			//g.DrawString(hx.TileModel.Left.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - p4.X + b / 5, center.Y - p4.Y - b / 2);
+			//g.DrawString(hx.TileModel.Right.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - p9.X - b * 1.25f, center.Y - p9.Y - b / 2);
+			//g.DrawString(hx.TileModel.Top.ToString(), new Font("Arial", fontSize, FontStyle.Regular), new SolidBrush(Color.Black), center.X - b / 1.75f, center.Y - a * sqrt3 / 2);
 
 			/*
 			//var drawRect = new RectangleF(center, new SizeF(0, 0));
@@ -85,6 +80,41 @@ namespace TakeItEasy
 
 			g.DrawString("0", new Font("Arial", b, FontStyle.Regular), new SolidBrush(Color.Black), center.X, center.Y - (a * sqrt3 / 2) + fontSize, drawFormat);
 			*/
+		}
+
+		public static void DrawNumber(Graphics g, int number, GraphicsPath bar)
+		{
+			var p1 = bar.PathPoints[0];
+			var p2 = bar.PathPoints[1];
+			var p3 = bar.PathPoints[2];
+
+			var c = new PointF((p1.X + p3.X) / 2, (p1.Y + p3.Y) / 2);
+			var p = new PointF((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
+
+			var fontSize = (float)Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
+			var r = (float) Math.Sqrt(Math.Pow(p.X - c.X, 2) + Math.Pow(p.Y - c.Y, 2));
+
+			var d = 0.18f * r; //8;
+			var dy = 0.02f * r;
+			var cosA = (p.X - c.X) / r;
+			var sinA = (p.Y - c.Y) / r;
+			var pNumber = new PointF(p.X - d * cosA, p.Y - d * sinA + dy);
+
+			var font = new Font("Arial", fontSize, FontStyle.Regular);
+
+			var drawFormat = new StringFormat
+			{
+				Alignment = StringAlignment.Center,
+				LineAlignment = StringAlignment.Center
+			};
+
+			g.DrawString(number.ToString(), font, new SolidBrush(Color.Black), pNumber, drawFormat);
+		}
+
+		public static void DrawBar(Graphics g, GraphicsPath bar, Color color)
+		{
+			g.FillPath(new SolidBrush(color), bar);
+			g.DrawPath(new Pen(Color.Black), bar);
 		}
 
 		private static int GetNumber(int order, int n1, int n2, int n3)
@@ -126,12 +156,6 @@ namespace TakeItEasy
 				case 9: return Color.Yellow;
 				default: return Color.White;
 			}
-		}
-
-		public static void DrawBar(Graphics g, GraphicsPath bar, Color color)
-		{
-			g.FillPath(new SolidBrush(color), bar);
-			g.DrawPath(new Pen(Color.Black), bar);
 		}
 
 		public static void DrawGameField(Graphics g, SizeF fieldSize, List<bool> model)
