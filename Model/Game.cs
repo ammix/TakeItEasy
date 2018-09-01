@@ -6,14 +6,14 @@ namespace TakeItEasy
 {
 	public class Game
 	{
-		private readonly List<TileModel> availableTiles = new List<TileModel>();
+		private readonly List<Tile> availableTiles = new List<Tile>();
 		private int index = 0;
 
-		public TileModel?[] Tiles;
+		public Tile?[] Tiles;
 
 		public Game()
 		{
-			Tiles = new TileModel?[19];
+			Tiles = new Tile?[19];
 
 			var leftNumbers = new[] {2, 6, 7};
 			var topNumbers = new[] {1, 5, 9};
@@ -25,21 +25,24 @@ namespace TakeItEasy
 				{
 					foreach (var ln in leftNumbers)
 					{
-						availableTiles.Add(new TileModel(tn, rn, ln));
+						availableTiles.Add(new Tile(tn, rn, ln));
 					}
 				}
 			}
 		}
 
-		public void GetNextTile()
+		public Tile GetNextTile()
 		{
 			//var r = new Random();
 			//var tileIndex = r.Next(1, 27);
 
 			//tiles[0] = availableTiles[tileIndex];		
-			Tiles[index] = new TileModel(9, 8, 7);
+			Tiles[index] = new Tile(9, 8, 7);
+			//Tiles[index] = availableTiles[index];
 
-			index++;
+			//index++;
+
+			return new Tile(9, 8, 7);
 		}
 	}
 }

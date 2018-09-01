@@ -19,9 +19,9 @@ namespace TakeItEasy
 		{
 			Edge = edge;
 			Center = center;
-			BorderColor = Color.LightPink;
-			Color = Color.DeepPink;
-			BorderThickness = 0.05f;
+			BorderColor = Color.Black;
+			Color = Color.White;
+			BorderThickness = 0.01f;
 
 			var c = new SizeF(Center);
 

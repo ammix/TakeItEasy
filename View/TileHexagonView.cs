@@ -7,7 +7,7 @@ namespace TakeItEasy
 	{
 		public HexagonView HexagonView;
 		public float BarThickness { get; }
-		public TileModel TileModel;
+		public Tile Tile;
 
 		private const float barThickness = 0.25f; // 15/62
 
@@ -21,16 +21,16 @@ namespace TakeItEasy
 		//	get { return GetBarColor()}
 		//}
 
-		public TileHexagonView(HexagonView hexagonView, TileModel tileModel)
+		public TileHexagonView(HexagonView hexagonView, Tile tile)
 		{
 			HexagonView = hexagonView;
 			BarThickness = barThickness * hexagonView.Edge;
-			TileModel = tileModel;
+			Tile = tile;
 		}
 
-		public Color TopBarColor => GetBarColor(TileModel.Top);
-		public Color LeftBarColor => GetBarColor(TileModel.Left);
-		public Color RightBarColor => GetBarColor(TileModel.Right);
+		public Color TopBarColor => GetBarColor(Tile.Top);
+		public Color LeftBarColor => GetBarColor(Tile.Left);
+		public Color RightBarColor => GetBarColor(Tile.Right);
 
 		private Color GetBarColor(int number)
 		{

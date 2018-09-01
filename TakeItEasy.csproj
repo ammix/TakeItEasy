@@ -47,20 +47,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Game.cs" />
-    <Compile Include="View\GameFieldView.cs" />
-    <Compile Include="Model\TileModel.cs" />
+    <Compile Include="View\FieldView.cs" />
+    <Compile Include="View\GameView.cs" />
+    <Compile Include="Model\Tile.cs" />
     <Compile Include="View\HexagonView.cs" />
-    <Compile Include="RenderEngine.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="View\RenderEngine.cs" />
+    <Compile Include="Controller\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Controller\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\TileHexagonView.cs" />
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Controller\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
