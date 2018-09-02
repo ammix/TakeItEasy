@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using TakeItEasy.Controller;
 
 namespace TakeItEasy
 {
@@ -13,7 +14,7 @@ namespace TakeItEasy
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Form1());
+			Application.Run(new FormController());
 		}
 	}
 }

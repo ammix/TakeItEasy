@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -6,25 +6,39 @@ namespace TakeItEasy.View
 {
 	public class FieldView
 	{
-		public Color FieldColor { get; set; }
+		public Color Color { get; }
+		public Color BorderColor { get; }
+		public float BorderThickness { get; }
+		private readonly HexagonView[] hexagons;
+
+		private const int MaxIndex = 19;
+		private static readonly float sqrt3 = (float)Math.Sqrt(3);
 
 		public IEnumerable<HexagonView> GetFieldHexagons()
 		{
 			return hexagons;
 		}
 
-		private readonly HexagonView[] hexagons;
-
-		private const int MaxIndex = 19;
-		private static readonly float sqrt3 = (float)Math.Sqrt(3);
-
-		public FieldView(SizeF fieldSize)
+		public FieldView(SizeF fieldSize, Color color, Color borderColor, float borderThickness)
 		{
-			FieldColor = Color.DeepPink;
+			Color = color;
+			BorderColor = borderColor;
+			BorderThickness = borderThickness;
 
 			hexagons = new HexagonView[MaxIndex];
-
 			InitializeFieldHexagons(fieldSize);
+		}
+
+		public int? GetPosition(Point point)
+		{
+			var index = 0;
+			foreach (var hexagon in hexagons)
+			{
+				if (hexagon.GraphicsPath.IsVisible(point))
+					return index;
+				index++;
+			}
+			return null;
 		}
 
 		private void InitializeFieldHexagons(SizeF fieldSize)
@@ -59,8 +73,9 @@ namespace TakeItEasy.View
 
 			for (var i = 0; i < MaxIndex; i++)
 			{
-				hexagons[i].Color = FieldColor;
-				hexagons[i].BorderThickness = 0.05f;
+				hexagons[i].Color = Color;
+				hexagons[i].BorderColor = BorderColor;
+				hexagons[i].BorderThickness = BorderThickness;
 			}
 		}
 	}

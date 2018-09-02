@@ -1,6 +1,6 @@
-﻿namespace TakeItEasy
+﻿namespace TakeItEasy.Controller
 {
-	partial class Form1
+	partial class FormController
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,36 +28,24 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.button1 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(12, 12);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(68, 33);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
-			// 
-			// Form1
+			// FormController
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(584, 562);
-			this.Controls.Add(this.button1);
+			this.ClientSize = new System.Drawing.Size(584, 561);
 			this.DoubleBuffered = true;
-			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Name = "FormController";
+			this.Text = "FormController";
+			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormController_MouseDown);
+			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormController_MouseMove);
 			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseUp);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Button button1;
 	}
 }
 

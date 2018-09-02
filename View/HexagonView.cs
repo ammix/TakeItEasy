@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace TakeItEasy
+namespace TakeItEasy.View
 {
 	public struct HexagonView
 	{

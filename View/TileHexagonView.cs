@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using TakeItEasy.Model;
+using TakeItEasy.View;
 
 namespace TakeItEasy
 {

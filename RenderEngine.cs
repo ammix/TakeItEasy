@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,36 +11,18 @@ namespace TakeItEasy
 	{
 		private static readonly float sqrt3 = (float) Math.Sqrt(3);
 
-		public static void DrawGame(Graphics g, SizeF fieldSize, Game game)
+		public static void DrawGameView(Graphics g, GameView gameView)
 		{
-			
+			foreach (var tile in gameView.GetTileHexagons())
+				DrawTileHexagon(g, tile);
 		}
 
-		public static void DrawGameField(Graphics g, FieldView field, GameView game)
+		public static void DrawFieldView(Graphics g, FieldView fieldView)
 		{
 			g.Clear(Color.Black);
 
-			foreach (var hexagons in field.GetFieldHexagons())
+			foreach (var hexagons in fieldView.GetFieldHexagons())
 				DrawHexagon(g, hexagons);
-
-			foreach (var tile in game.GetTileHexagons())
-				DrawTileHexagon(g, tile);
-
-			//foreach (var hx in hexagons)
-			//	DrawHexagon(g, hx);
-			//for (var i=0; i<19; i++)
-			//	if (game.Tiles[i] == null)
-			//		DrawHexagon(g, field.Hexagons[i]);
-			//	else
-			//	{
-			//		var hexagonView = field.Hexagons[i];
-			//		hexagonView.Color = Color.DeepSkyBlue;
-			//		hexagonView.BorderThickness = 0.01f;
-			//		hexagonView.BorderColor = Color.Black;
-
-			//		var tileHexagonView = new TileHexagonView(hexagonView, game.Tiles[i].Value);
-			//		DrawTileHexagon(g, tileHexagonView);
-			//	}
 		}
 
 		public static void DrawHexagon(Graphics g, HexagonView hx)
@@ -154,11 +136,11 @@ namespace TakeItEasy
 		{
 			switch (number)
 			{
-				case 1: return Color.Black;
+				case 1: return Color.DimGray;
 				case 2: return Color.Silver;
 				case 3: return Color.Pink;
 				case 4: return Color.DeepSkyBlue;
-				case 5: return Color.Gray;
+				case 5: return Color.DarkGray; //Gray;
 				case 6: return Color.Red;
 				case 7: return Color.LimeGreen; // LawnGreen;
 				case 8: return Color.Orange;

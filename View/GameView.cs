@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 using TakeItEasy.Model;
 
@@ -8,38 +7,38 @@ namespace TakeItEasy.View
 {
 	public class GameView
 	{
-		public Color GameTileColor { get; set; }
-		private readonly Dictionary<int, TileHexagonView> tiles;
+		public Color TileColor { get; }
+		public Color TileBorderColor { get; }
+		public float TileBorderThickness { get; }
 
-		public GameView(FieldView field, Game game)
+		//private readonly Dictionary<int, TileHexagonView> tiles;
+		private readonly List<TileHexagonView> tiles;
+
+		public GameView(Game game, FieldView field, Color tileColor, Color tileBorderColor, float tileBorderThickness)
 		{
-			GameTileColor = Color.DeepSkyBlue;
-			tiles = new Dictionary<int, TileHexagonView>();
+			TileColor = tileColor;
+			TileBorderColor = tileBorderColor;
+			TileBorderThickness = tileBorderThickness;
+
+			//tiles = new Dictionary<int, TileHexagonView>();
+			tiles = new List<TileHexagonView>();
 
 			var fieldHexagons = new List<HexagonView>(field.GetFieldHexagons());
-
 			foreach (var tile in game.GetTiles())
-				tiles.Add(tile.Key, new TileHexagonView(fieldHexagons[tile.Key], tile.Value));
+			{
+				var tileHagaonView = new TileHexagonView(fieldHexagons[tile.Key], tile.Value);
+				tileHagaonView.HexagonView.Color = TileColor;
+				tileHagaonView.HexagonView.BorderColor = tileBorderColor;
+				tileHagaonView.HexagonView.BorderThickness = tileBorderThickness;
+				//tiles.Add(tile.Key, tileHagaonView);
+				tiles.Add(tileHagaonView);
+			}
 		}
 
 		public IEnumerable<TileHexagonView> GetTileHexagons()
 		{
-			return tiles.Select(tile => tile.Value);
+			//return tiles.Select(tile => tile.Value);
+			return tiles;
 		}
-
-		//public void AddTileHexagon(int index, Tile tile)
-		//{
-		//	if (index < 0 && index >= IndexMax)
-		//		throw new ApplicationException($"There are only 19 cells on field. Index {index} is wrong");
-
-		//		var hexagonView = hexagons[index];
-		//	var tileHexagon = new TileHexagonView(hexagonView, tile);
-
-		//	tileHexagon.HexagonView.Color = GameTileColor;
-		//	tileHexagon.HexagonView.BorderColor = Color.Black;
-		//	tileHexagon.HexagonView.BorderThickness = 0.01f;
-
-		//	tiles.Add(index, tileHexagon);
-		//}
 	}
 }
