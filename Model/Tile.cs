@@ -2,15 +2,15 @@
 {
 	public struct Tile
 	{
+		public int TopNumber;
+		public int RightNumber;
+		public int LeftNumber;
+
 		public Tile(int top, int right, int left)
 		{
-			Top = top;
-			Right = right;
-			Left = left;
+			TopNumber = top;
+			RightNumber = right;
+			LeftNumber = left;
 		}
-
-		public int Top;
-		public int Right;
-		public int Left;
 	}
 }

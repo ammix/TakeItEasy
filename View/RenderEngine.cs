@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using TakeItEasy.Model;
+using TakeItEasy.View;
 
 namespace TakeItEasy
 {
@@ -15,14 +16,14 @@ namespace TakeItEasy
 			
 		}
 
-		public static void DrawGameField(Graphics g, FieldView field, Game game)
+		public static void DrawGameField(Graphics g, FieldView field, GameView game)
 		{
 			g.Clear(Color.Black);
 
 			foreach (var hexagons in field.GetFieldHexagons())
 				DrawHexagon(g, hexagons);
 
-			foreach (var tile in field.GetTileHexagons())
+			foreach (var tile in game.GetTileHexagons())
 				DrawTileHexagon(g, tile);
 
 			//foreach (var hx in hexagons)
@@ -100,7 +101,7 @@ namespace TakeItEasy
 
 		private static int GetNumber(int order, Tile model)
 		{
-			var list = new List<int> {model.Left, model.Top, model.Right};
+			var list = new List<int> {model.LeftNumber, model.TopNumber, model.RightNumber};
 			list.Sort();
 			return list[order];
 		}

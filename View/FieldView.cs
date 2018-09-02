@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using TakeItEasy.Model;
 
 namespace TakeItEasy.View
 {
@@ -16,47 +15,16 @@ namespace TakeItEasy.View
 
 		private readonly HexagonView[] hexagons;
 
-		private const int IndexMax = 19;
+		private const int MaxIndex = 19;
 		private static readonly float sqrt3 = (float)Math.Sqrt(3);
 
 		public FieldView(SizeF fieldSize)
 		{
 			FieldColor = Color.DeepPink;
 
-			hexagons = new HexagonView[IndexMax];
+			hexagons = new HexagonView[MaxIndex];
 
 			InitializeFieldHexagons(fieldSize);
-		}
-
-		//public HexagonView GetFieldHexagon(int index)
-		//{
-		//	if (index > 0 && index < IndexMax)
-		//		return hexagons[index];
-
-		//	throw new ApplicationException($"There are only 19 hexagons on field. Index {index} is wrong");
-		//}
-
-		//public TileHexagonView GetTileHexagon(int index)
-		//{
-		//	if (tiles.ContainsKey(index))
-		//		return tiles[index];
-
-		//	throw new ApplicationException($"There is no tile on cell with index {index}");
-		//}
-
-		public void AddTileHexagon(int index, Tile tile)
-		{
-			if (index < 0 && index >= IndexMax)
-				throw new ApplicationException($"There are only 19 cells on field. Index {index} is wrong");
-
-				var hexagonView = hexagons[index];
-			var tileHexagon = new TileHexagonView(hexagonView, tile);
-
-			tileHexagon.HexagonView.Color = GameTileColor;
-			tileHexagon.HexagonView.BorderColor = Color.Black;
-			tileHexagon.HexagonView.BorderThickness = 0.01f;
-
-			tiles.Add(index, tileHexagon);
 		}
 
 		private void InitializeFieldHexagons(SizeF fieldSize)
@@ -89,7 +57,7 @@ namespace TakeItEasy.View
 			hexagons[17] = new HexagonView(a, new PointF(-3 * a, 0) + c);
 			hexagons[18] = new HexagonView(a, new PointF(-3 * a, -sqrt3 * a) + c);
 
-			for (var i = 0; i < IndexMax; i++)
+			for (var i = 0; i < MaxIndex; i++)
 			{
 				hexagons[i].Color = FieldColor;
 				hexagons[i].BorderThickness = 0.05f;

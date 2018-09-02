@@ -28,9 +28,9 @@ namespace TakeItEasy
 			Tile = tile;
 		}
 
-		public Color TopBarColor => GetBarColor(Tile.Top);
-		public Color LeftBarColor => GetBarColor(Tile.Left);
-		public Color RightBarColor => GetBarColor(Tile.Right);
+		public Color TopBarColor => GetBarColor(Tile.TopNumber);
+		public Color LeftBarColor => GetBarColor(Tile.LeftNumber);
+		public Color RightBarColor => GetBarColor(Tile.RightNumber);
 
 		private Color GetBarColor(int number)
 		{

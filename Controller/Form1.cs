@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using TakeItEasy.Model;
+using TakeItEasy.View;
 
 namespace TakeItEasy
 {
@@ -9,7 +10,7 @@ namespace TakeItEasy
 		//private readonly GameField gameField;
 		private readonly Game game;
 
-		private FieldView field;
+		private FieldView fieldView;
 
 		public Form1()
 		{
@@ -29,8 +30,10 @@ namespace TakeItEasy
 
 			//gameField.Draw(e.Graphics, ClientSize);
 
-			field = new FieldView(ClientSize);
-			RenderEngine.DrawGameField(e.Graphics, field, game);
+			fieldView = new FieldView(ClientSize);
+			var gameView = new GameView(fieldView, game);
+
+			RenderEngine.DrawGameField(e.Graphics, fieldView, gameView);
 
 			//RenderEngine.DrawGame(e.Graphics, ClientSize, model);
 
@@ -66,7 +69,7 @@ namespace TakeItEasy
 		private void button1_Click(object sender, EventArgs e)
 		{
 			var tile = game.GetNextTile();
-			field.AddTileHexagon(1, tile);
+			game.AddTileOnField(1, tile);
 
 			Invalidate();
 		}

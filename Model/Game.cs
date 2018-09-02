@@ -1,48 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using TakeItEasy.Model;
 
-namespace TakeItEasy
+namespace TakeItEasy.Model
 {
 	public class Game
 	{
-		private readonly List<Tile> availableTiles = new List<Tile>();
-		private int index = 0;
-
-		public Tile?[] Tiles;
+		private readonly List<Tile> availableTiles;
+		private readonly Dictionary<int, Tile> tiles;
+		private readonly Random random;
 
 		public Game()
 		{
-			Tiles = new Tile?[19];
+			availableTiles = GetAvailableTiles();
+			tiles = new Dictionary<int, Tile>();
+			random = new Random();
+		}
 
-			var leftNumbers = new[] {2, 6, 7};
-			var topNumbers = new[] {1, 5, 9};
-			var rightNumbers = new[] {3, 4, 8};
+		public IEnumerable<KeyValuePair<int, Tile>> GetTiles()
+		{
+			return tiles;
+		}
 
-			foreach (var rn in rightNumbers)
-			{
-				foreach (var tn in topNumbers)
-				{
-					foreach (var ln in leftNumbers)
-					{
-						availableTiles.Add(new Tile(tn, rn, ln));
-					}
-				}
-			}
+		public void AddTileOnField(int position, Tile tile)
+		{
+			tiles.Add(position, tile);
 		}
 
 		public Tile GetNextTile()
 		{
-			//var r = new Random();
-			//var tileIndex = r.Next(1, 27);
+			var randomIndex = random.Next(0, availableTiles.Count - 1);
 
-			//tiles[0] = availableTiles[tileIndex];		
-			Tiles[index] = new Tile(9, 8, 7);
-			//Tiles[index] = availableTiles[index];
+			var nextTile = availableTiles[randomIndex];
+			availableTiles.RemoveAt(randomIndex);
 
-			//index++;
+			return nextTile;
+		}
 
-			return new Tile(9, 8, 7);
+		private static List<Tile> GetAvailableTiles()
+		{
+			var availableTiles = new List<Tile>();
+
+			var leftNumbers = new[] { 2, 6, 7 };
+			var topNumbers = new[] { 1, 5, 9 };
+			var rightNumbers = new[] { 3, 4, 8 };
+
+			foreach (var rn in rightNumbers)
+			foreach (var tn in topNumbers)
+			foreach (var ln in leftNumbers)
+				availableTiles.Add(new Tile(tn, rn, ln));
+
+			return availableTiles;
 		}
 	}
 }
