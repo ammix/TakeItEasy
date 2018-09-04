@@ -6,21 +6,18 @@ namespace TakeItEasy.View
 {
 	public class FieldView
 	{
-		public Color Color { get; }
-		public Color BorderColor { get; }
-		public float BorderThickness { get; }
-		private readonly HexagonView[] hexagons;
+		public Color Color { get; set; }
+		public Color BorderColor { get; set; }
+		public float BorderThickness { get; set; }
+		public SizeF Size { get; set; }
 
+		private readonly HexagonView[] hexagons;
 		private const int MaxIndex = 19;
 		private static readonly float sqrt3 = (float)Math.Sqrt(3);
 
-		public IEnumerable<HexagonView> GetFieldHexagons()
-		{
-			return hexagons;
-		}
-
 		public FieldView(SizeF fieldSize, Color color, Color borderColor, float borderThickness)
 		{
+			Size = fieldSize;
 			Color = color;
 			BorderColor = borderColor;
 			BorderThickness = borderThickness;
@@ -39,6 +36,16 @@ namespace TakeItEasy.View
 				index++;
 			}
 			return null;
+		}
+
+		public IEnumerable<HexagonView> GetFieldHexagons()
+		{
+			return hexagons;
+		}
+
+		public void Update(SizeF fieldSize)
+		{
+			InitializeFieldHexagons(fieldSize);
 		}
 
 		private void InitializeFieldHexagons(SizeF fieldSize)

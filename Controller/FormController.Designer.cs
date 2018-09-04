@@ -34,10 +34,11 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(584, 561);
+			this.ClientSize = new System.Drawing.Size(584, 562);
 			this.DoubleBuffered = true;
 			this.Name = "FormController";
 			this.Text = "FormController";
+			this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FormController_MouseDoubleClick);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormController_MouseDown);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormController_MouseMove);
 			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseUp);

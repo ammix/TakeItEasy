@@ -141,7 +141,7 @@ namespace TakeItEasy
 				case 3: return Color.Pink;
 				case 4: return Color.DeepSkyBlue;
 				case 5: return Color.DarkGray; //Gray;
-				case 6: return Color.Red;
+				case 6: return Color.DeepPink;
 				case 7: return Color.LimeGreen; // LawnGreen;
 				case 8: return Color.Orange;
 				case 9: return Color.Yellow;
