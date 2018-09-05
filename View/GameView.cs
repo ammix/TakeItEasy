@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using TakeItEasy.Model;
 
 namespace TakeItEasy.View
@@ -46,16 +47,10 @@ namespace TakeItEasy.View
 			//tiles = new List<TileHexagonView>();
 			tiles = new Dictionary<int, TileHexagonView>();
 
-			var fieldHexagons = new List<HexagonView>(fieldView.GetFieldHexagons());
-
 			foreach (var tile in game.GetTiles())
 			{
-				var hx0 = fieldHexagons[tile.Key];
-				var hx1 = new HexagonView(hx0.Edge, hx0.Center);
-
-
-				//var tileHagaonView = new TileHexagonView(hx1, tile.Value);
-				var tileHagaonView = new TileHexagonView(fieldHexagons[tile.Key], tile.Value);
+				var hexagonView = new HexagonView(fieldView.GetHexagon(tile.Key));
+				var tileHagaonView = new TileHexagonView(hexagonView, tile.Value);
 
 				tileHagaonView.HexagonView.Color = TileColor;
 				tileHagaonView.HexagonView.BorderColor = TileBorderColor;
@@ -70,18 +65,30 @@ namespace TakeItEasy.View
 			selectedTileIndex = position;
 		}
 
+		public void SetSelectedTile(int newPosition)
+		{
+			if (newPosition == selectedTileIndex)
+				return;
+			game.ChangeTilePosition(selectedTileIndex, newPosition);
+		}
+
 		public void MoveSelectedTile(Point vector)
 		{
 			if (tiles.ContainsKey(selectedTileIndex))
 			{
-				var tile = tiles[selectedTileIndex];
+				var tileView = tiles[selectedTileIndex];
 
 				//var hx = tile.HexagonView;
 				//hx.Center = tile.HexagonView.Center + new Size(vector);
-				tile.HexagonView.Center = tile.HexagonView.Center + new Size(vector);
+				tileView.HexagonView.Center = tileView.HexagonView.Center + new Size(vector);
 				//tile.HexagonView = hx;
 
-				tiles[selectedTileIndex] = tile;
+				//var x = tileView.HexagonView;
+				//var newCenter = x.Center + new SizeF(vector);
+				//var newX = new HexagonView(x, newCenter);
+
+				//tiles[selectedTileIndex] = new TileHexagonView(x, tileView.Tile);
+				tiles[selectedTileIndex] = tileView;
 			}
 		}
 	}

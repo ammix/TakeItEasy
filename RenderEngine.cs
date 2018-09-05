@@ -21,7 +21,7 @@ namespace TakeItEasy
 		{
 			g.Clear(Color.Black);
 
-			foreach (var hexagons in fieldView.GetFieldHexagons())
+			foreach (var hexagons in fieldView.GetHexagons())
 				DrawHexagon(g, hexagons);
 		}
 

@@ -38,9 +38,14 @@ namespace TakeItEasy.View
 			return null;
 		}
 
-		public IEnumerable<HexagonView> GetFieldHexagons()
+		public IEnumerable<HexagonView> GetHexagons()
 		{
 			return hexagons;
+		}
+
+		public HexagonView GetHexagon(int index)
+		{
+			return hexagons[index];
 		}
 
 		public void Update(SizeF fieldSize)

@@ -33,6 +33,7 @@ namespace TakeItEasy.View
 		{
 			this.edge = edge;
 			this.center = center;
+
 			BorderColor = Color.Black;
 			Color = Color.White;
 			BorderThickness = 0.01f;
@@ -40,6 +41,9 @@ namespace TakeItEasy.View
 			GraphicsPath = new GraphicsPath();
 			Update();
 		}
+
+		public HexagonView(HexagonView hxView) : this(hxView.Edge, hxView.Center)
+		{ }
 
 		private void Update()
 		{

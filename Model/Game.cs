@@ -26,6 +26,27 @@ namespace TakeItEasy.Model
 			tiles.Add(position, tile);
 		}
 
+		public void ChangeTilePosition(int prevIndex, int newIndex)
+		{
+			if (!tiles.ContainsKey(prevIndex))
+				return;
+
+			if (tiles.ContainsKey(newIndex))
+				return;
+
+			var tile = tiles[prevIndex];
+			tiles.Add(newIndex, tile);
+			tiles.Remove(prevIndex);
+		}
+
+		public Tile? GetTile(int index)
+		{
+			if (tiles.ContainsKey(index))
+				return tiles[index];
+
+			return null;
+		}
+
 		public Tile GetNextTile()
 		{
 			var randomIndex = random.Next(0, availableTiles.Count - 1);

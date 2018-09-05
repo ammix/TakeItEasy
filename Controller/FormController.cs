@@ -59,6 +59,17 @@ namespace TakeItEasy.Controller
 			//Invalidate();
 
 			letsMove = false;
+			var position = fieldView.GetPosition(e.Location);
+			if (position == null)
+			{
+				Invalidate();
+				return;
+			}
+
+			gameView.SetSelectedTile(position.Value);
+			gameView.Update();
+
+			Invalidate();
 		}
 
 		private void FormController_MouseDown(object sender, MouseEventArgs e)
@@ -93,6 +104,8 @@ namespace TakeItEasy.Controller
 		{
 			var position = fieldView.GetPosition(e.Location);
 			if (position == null) return;
+
+			if (game.GetTile(position.Value) != null) return;
 
 			var tile = game.GetNextTile();
 			game.AddTileOnField(position.Value, tile);
