@@ -16,6 +16,8 @@ namespace TakeItEasy.Model
 			random = new Random();
 		}
 
+		public Tile NewTile { get; private set; }
+
 		public IEnumerable<KeyValuePair<int, Tile>> GetTiles()
 		{
 			return tiles;
@@ -24,6 +26,11 @@ namespace TakeItEasy.Model
 		public void AddTileOnField(int position, Tile tile)
 		{
 			tiles.Add(position, tile);
+		}
+
+		public void AddNewTile()
+		{
+			NewTile = GetNextTile();
 		}
 
 		public void ChangeTilePosition(int prevIndex, int newIndex)

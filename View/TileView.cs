@@ -1,53 +1,38 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 using TakeItEasy.Model;
 
 namespace TakeItEasy.View
 {
-	public struct TileView
+	public class TileView: HexagonView
 	{
-		public HexagonView HexagonView;
-		public float BarThickness { get; }
-		public Tile Tile;
+		public TileBarView[] BarsView { get; }
 
-		private const float barThickness = 0.25f; // 15/62
-
-		//public Tuple<int, Color> GetBar1()
-
-		//public Color => {
-		//	return GetBarColor();
-		//}
-		//public Color Color
-		//{
-		//	get { return GetBarColor()}
-		//}
-
-		public TileView(HexagonView hexagonView, Tile tile)
+		public TileView(Tile tile, float edge, PointF center) : base(edge, center)
 		{
-			HexagonView = hexagonView;
-			BarThickness = barThickness * hexagonView.Edge;
-			Tile = tile;
+			BarsView = new TileBarView[3];
+
+			for (var i = 0; i < 3; i++)
+			{
+				var number = GetNumber(i, tile);
+				BarsView[i] = new TileBarView(Hexagon, number);
+			}
 		}
 
-		public Color TopBarColor => GetBarColor(Tile.TopNumber);
-		public Color LeftBarColor => GetBarColor(Tile.LeftNumber);
-		public Color RightBarColor => GetBarColor(Tile.RightNumber);
-
-		private Color GetBarColor(int number)
+		public void Update(PointF center)
 		{
-			switch (number)
-			{
-				case 1: return Color.Black;
-				case 2: return Color.Silver;
-				case 3: return Color.Pink;
-				case 4: return Color.DeepSkyBlue;
-				case 5: return Color.Gray;
-				case 6: return Color.Red;
-				case 7: return Color.LimeGreen; // LawnGreen;
-				case 8: return Color.Orange;
-				case 9: return Color.Yellow;
-				default: return Color.White;
-			}
+			Hexagon = new Hexagon(Hexagon.Edge, center);
+
+			for (var i = 0; i < 3; i++)
+				BarsView[i] = new TileBarView(Hexagon, BarsView[i].Number);
+		}
+
+		private static int GetNumber(int order, Tile model)
+		{
+			var list = new List<int> { model.LeftNumber, model.TopNumber, model.RightNumber };
+			list.Sort();
+			return list[order];
 		}
 	}
 }

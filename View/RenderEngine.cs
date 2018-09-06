@@ -1,57 +1,46 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using TakeItEasy.Model;
-using TakeItEasy.Rendering;
-using TakeItEasy.View;
 
-namespace TakeItEasy
+namespace TakeItEasy.View
 {
 	public static class RenderEngine
 	{
-		private static readonly float sqrt3 = (float) Math.Sqrt(3);
-
-		public static void DrawGameView(Graphics g, GameView gameView)
+		public static void DrawGameView(Graphics g, GameTilesView gameTilesView)
 		{
-			foreach (var tile in gameView.GetTileHexagons())
+			foreach (var tile in gameTilesView.GetTileHexagons())
 				DrawTileHexagon(g, tile);
 		}
 
-		public static void DrawFieldView(Graphics g, FieldView fieldView)
+		public static void DrawFieldView(Graphics g, GameFieldView gameFieldView)
 		{
 			g.Clear(Color.Black);
 
-			foreach (var hexagons in fieldView.GetHexagons())
+			foreach (var hexagons in gameFieldView.GetHexagons())
 				DrawHexagon(g, hexagons);
 		}
 
-		public static void DrawHexagon(Graphics g, HexagonGraphics hx)
+		public static void DrawHexagon(Graphics g, HexagonView hx)
 		{
-			g.FillPath(new SolidBrush(hx.Color), hx.Graphics);
-			g.DrawPath(new Pen(hx.BorderColor, hx.BorderThickness * hx.Hexagon.Edge) { EndCap = LineCap.Round }, hx.Graphics);
+			using (var graphicsPath = new GraphicsPath())
+			{
+				graphicsPath.AddLines(hx.Hexagon.Vertices);
+				g.FillPath(new SolidBrush(hx.Color), graphicsPath);
+				g.DrawPath(new Pen(hx.BorderColor, hx.BorderThickness * hx.Hexagon.Edge) {EndCap = LineCap.Round}, graphicsPath);
+			}
 		}
 
-		public static void DrawTileHexagon(Graphics g, TileGraphics hx)
+		public static void DrawTileHexagon(Graphics g, TileView hx)
 		{
 			DrawHexagon(g, hx);
 
-			foreach (var bar in hx.Bars)
+			foreach (var bar in hx.BarsView)
+			using (var graphicPath = new GraphicsPath())
 			{
-				DrawBar(g, bar.Graphics, bar.Color);
-				DrawNumber(g, bar.Number, bar.Graphics);
+				graphicPath.AddLines(bar.Vertices);
+				DrawBar(g, graphicPath, bar.Color);
+				DrawNumber(g, bar.Number, graphicPath);
 			}
-
-			//for (var i = 0; i < 3; i++)
-			//{
-			//	//var number = GetNumber(i, hx.Tile);
-			//	//var bar = GetBar(number, hx.HexagonView);
-			//	//var color = GetBarColor(number);
-
-			//	//DrawBar(g, bar, color);
-			//	var x = hx.Bars[i];
-			//	DrawNumber(g, number, bar);
-			//}
 		}
 
 		private static void DrawBar(Graphics g, GraphicsPath bar, Color color)
