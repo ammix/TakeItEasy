@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
-using TakeItEasy.Model;
-using TakeItEasy.View;
 
-namespace TakeItEasy
+using TakeItEasy.Model;
+
+namespace TakeItEasy.View
 {
-	public struct TileHexagonView
+	public struct TileView
 	{
 		public HexagonView HexagonView;
 		public float BarThickness { get; }
@@ -22,7 +22,7 @@ namespace TakeItEasy
 		//	get { return GetBarColor()}
 		//}
 
-		public TileHexagonView(HexagonView hexagonView, Tile tile)
+		public TileView(HexagonView hexagonView, Tile tile)
 		{
 			HexagonView = hexagonView;
 			BarThickness = barThickness * hexagonView.Edge;

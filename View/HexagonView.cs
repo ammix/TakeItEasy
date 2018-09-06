@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace TakeItEasy.View
 {
@@ -13,21 +12,18 @@ namespace TakeItEasy.View
 		public float Edge
 		{
 			get { return edge; }
-			set { edge = value; Update(); }
+			set { edge = value; }
 		}
 
 		public PointF Center
 		{
 			get { return center; }
-			set { center = value; Update(); }
+			set { center = value; }
 		}
 
 		public Color BorderColor { get; set; }
 		public Color Color { get; set; }
 		public float BorderThickness { get; set; } // ratio border to edge
-		public GraphicsPath GraphicsPath { get; }
-
-
 
 		public HexagonView(float edge, PointF center)
 		{
@@ -37,27 +33,9 @@ namespace TakeItEasy.View
 			BorderColor = Color.Black;
 			Color = Color.White;
 			BorderThickness = 0.01f;
-
-			GraphicsPath = new GraphicsPath();
-			Update();
 		}
 
 		public HexagonView(HexagonView hxView) : this(hxView.Edge, hxView.Center)
 		{ }
-
-		private void Update()
-		{
-			GraphicsPath.Reset();
-			var c = new SizeF(center);
-
-			var p1 = new PointF(Edge / 2f, Edge * sqrt3 / 2) + c;
-			var p2 = new PointF(Edge, 0) + c;
-			var p3 = new PointF(Edge / 2f, -Edge * sqrt3 / 2) + c;
-			var p4 = new PointF(-Edge / 2f, -Edge * sqrt3 / 2) + c;
-			var p5 = new PointF(-Edge, 0) + c;
-			var p6 = new PointF(-Edge / 2f, Edge * sqrt3 / 2) + c;
-
-			GraphicsPath.AddLines(new[] {p1, p2, p3, p4, p5, p6, p1});
-		}
 	}
 }

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-
 using TakeItEasy.Model;
 using TakeItEasy.View;
 
-namespace TakeItEasy.Controller
+namespace TakeItEasy
 {
-	public partial class FormController : Form
+	public partial class MainWindow : Form
 	{
 		private readonly Game game;
 
@@ -18,7 +17,7 @@ namespace TakeItEasy.Controller
 		private Point clickPoint;
 		//private TileHexagonView selectedTileView;
 
-		public FormController()
+		public MainWindow()
 		{
 			game = new Game();
 
@@ -66,8 +65,8 @@ namespace TakeItEasy.Controller
 				return;
 			}
 
-			gameView.SetSelectedTile(position.Value);
-			gameView.Update();
+			//gameView.SetSelectedTile(position.Value);
+			//gameView.Update();
 
 			Invalidate();
 		}
@@ -81,7 +80,7 @@ namespace TakeItEasy.Controller
 			clickPoint = e.Location;
 			//selectedTileView = gameView.GetTileHexagon(position);
 
-			gameView.SelectTile(position.Value);
+			//gameView.SelectTile(position.Value);
 
 		}
 
@@ -94,7 +93,8 @@ namespace TakeItEasy.Controller
 				var vector = e.Location - new Size(clickPoint);
 				clickPoint = e.Location;
 				//gameView.MoveNewTile(e.Location);
-				gameView.MoveSelectedTile(vector);
+
+				//gameView.MoveSelectedTile(vector);
 
 				Invalidate();
 			}

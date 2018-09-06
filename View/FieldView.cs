@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+
+using TakeItEasy.Rendering;
 
 namespace TakeItEasy.View
 {
@@ -11,9 +14,9 @@ namespace TakeItEasy.View
 		public float BorderThickness { get; set; }
 		public SizeF Size { get; set; }
 
-		private readonly HexagonView[] hexagons;
-		private const int MaxIndex = 19;
-		private static readonly float sqrt3 = (float)Math.Sqrt(3);
+		private readonly Dictionary<int, HexagonGraphics> hexagons;
+		//private readonly Dictionary<int, Tuple<HexagonView, GraphicsPath>> hexagons;
+		//private HexagonGraphics[] hexagons;
 
 		public FieldView(SizeF fieldSize, Color color, Color borderColor, float borderThickness)
 		{
@@ -22,28 +25,29 @@ namespace TakeItEasy.View
 			BorderColor = borderColor;
 			BorderThickness = borderThickness;
 
-			hexagons = new HexagonView[MaxIndex];
+			hexagons = new Dictionary<int, HexagonGraphics>();
+			//hexagons = new Dictionary<int, Tuple<HexagonView, GraphicsPath>>();
+			//hexagons = hexagons = new HexagonGraphics[MaxIndex];
 			InitializeFieldHexagons(fieldSize);
 		}
 
 		public int? GetPosition(Point point)
 		{
-			var index = 0;
 			foreach (var hexagon in hexagons)
 			{
-				if (hexagon.GraphicsPath.IsVisible(point))
-					return index;
-				index++;
+				if (hexagon.Value.Graphics.IsVisible(point))
+					return hexagon.Key;
 			}
+
 			return null;
 		}
 
-		public IEnumerable<HexagonView> GetHexagons()
+		public IEnumerable<HexagonGraphics> GetHexagons()
 		{
-			return hexagons;
+			return hexagons.Select(x => x.Value);
 		}
 
-		public HexagonView GetHexagon(int index)
+		public HexagonGraphics GetHexagon(int index)
 		{
 			return hexagons[index];
 		}
@@ -59,31 +63,36 @@ namespace TakeItEasy.View
 			var c = new SizeF(center);
 			var a = Math.Min(fieldSize.Width, fieldSize.Height) / 9;
 
-			hexagons[0] = new HexagonView(a, new PointF(3 * a, sqrt3 * a) + c);
-			hexagons[1] = new HexagonView(a, new PointF(3 * a, 0) + c);
-			hexagons[2] = new HexagonView(a, new PointF(3 * a, -sqrt3 * a) + c);
+			float sqrt3 = (float) Math.Sqrt(3);
 
-			hexagons[3] = new HexagonView(a, new PointF(1.5f * a, 1.5f * sqrt3 * a) + c);
-			hexagons[4] = new HexagonView(a, new PointF(1.5f * a, 0.5f * sqrt3 * a) + c);
-			hexagons[5] = new HexagonView(a, new PointF(1.5f * a, -0.5f * sqrt3 * a) + c);
-			hexagons[6] = new HexagonView(a, new PointF(1.5f * a, -1.5f * sqrt3 * a) + c);
+			hexagons.Clear();
 
-			hexagons[7] = new HexagonView(a, new PointF(0, 2 * sqrt3 * a) + c);
-			hexagons[8] = new HexagonView(a, new PointF(0, sqrt3 * a) + c);
-			hexagons[9] = new HexagonView(a, new PointF(0, 0) + c);
-			hexagons[10] = new HexagonView(a, new PointF(0, -sqrt3 * a) + c);
-			hexagons[11] = new HexagonView(a, new PointF(0, -2 * sqrt3 * a) + c);
+			hexagons.Add(0, new HexagonGraphics(a, new PointF(3 * a, sqrt3 * a) + c));
 
-			hexagons[12] = new HexagonView(a, new PointF(-1.5f * a, 1.5f * sqrt3 * a) + c);
-			hexagons[13] = new HexagonView(a, new PointF(-1.5f * a, 0.5f * sqrt3 * a) + c);
-			hexagons[14] = new HexagonView(a, new PointF(-1.5f * a, -0.5f * sqrt3 * a) + c);
-			hexagons[15] = new HexagonView(a, new PointF(-1.5f * a, -1.5f * sqrt3 * a) + c);
+			hexagons.Add(1, new HexagonGraphics(a, new PointF(3 * a, 0) + c));
+			hexagons.Add(2, new HexagonGraphics(a, new PointF(3 * a, -sqrt3 * a) + c));
 
-			hexagons[16] = new HexagonView(a, new PointF(-3 * a, sqrt3 * a) + c);
-			hexagons[17] = new HexagonView(a, new PointF(-3 * a, 0) + c);
-			hexagons[18] = new HexagonView(a, new PointF(-3 * a, -sqrt3 * a) + c);
+			hexagons.Add(3, new HexagonGraphics(a, new PointF(1.5f * a, 1.5f * sqrt3 * a) + c));
+			hexagons.Add(4, new HexagonGraphics(a, new PointF(1.5f * a, 0.5f * sqrt3 * a) + c));
+			hexagons.Add(5, new HexagonGraphics(a, new PointF(1.5f * a, -0.5f * sqrt3 * a) + c));
+			hexagons.Add(6, new HexagonGraphics(a, new PointF(1.5f * a, -1.5f * sqrt3 * a) + c));
 
-			for (var i = 0; i < MaxIndex; i++)
+			hexagons.Add(7, new HexagonGraphics(a, new PointF(0, 2 * sqrt3 * a) + c));
+			hexagons.Add(8, new HexagonGraphics(a, new PointF(0, sqrt3 * a) + c));
+			hexagons.Add(9, new HexagonGraphics(a, new PointF(0, 0) + c));
+			hexagons.Add(10, new HexagonGraphics(a, new PointF(0, -sqrt3 * a) + c));
+			hexagons.Add(11, new HexagonGraphics(a, new PointF(0, -2 * sqrt3 * a) + c));
+
+			hexagons.Add(12, new HexagonGraphics(a, new PointF(-1.5f * a, 1.5f * sqrt3 * a) + c));
+			hexagons.Add(13, new HexagonGraphics(a, new PointF(-1.5f * a, 0.5f * sqrt3 * a) + c));
+			hexagons.Add(14, new HexagonGraphics(a, new PointF(-1.5f * a, -0.5f * sqrt3 * a) + c));
+			hexagons.Add(15, new HexagonGraphics(a, new PointF(-1.5f * a, -1.5f * sqrt3 * a) + c));
+
+			hexagons.Add(16, new HexagonGraphics(a, new PointF(-3 * a, sqrt3 * a) + c));
+			hexagons.Add(17, new HexagonGraphics(a, new PointF(-3 * a, 0) + c));
+			hexagons.Add(18, new HexagonGraphics(a, new PointF(-3 * a, -sqrt3 * a) + c));
+
+			for (var i = 0; i < hexagons.Count; i++)
 			{
 				hexagons[i].Color = Color;
 				hexagons[i].BorderColor = BorderColor;

@@ -1,6 +1,6 @@
-﻿namespace TakeItEasy.Controller
+﻿namespace TakeItEasy
 {
-	partial class FormController
+	partial class MainWindow
 	{
 		/// <summary>
 		/// Required designer variable.

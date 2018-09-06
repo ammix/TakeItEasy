@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
+
 using TakeItEasy.Model;
+using TakeItEasy.Rendering;
 
 namespace TakeItEasy.View
 {
@@ -12,7 +13,7 @@ namespace TakeItEasy.View
 		public Color TileBorderColor { get; }
 		public float TileBorderThickness { get; }
 
-		private Dictionary<int, TileHexagonView> tiles;
+		private Dictionary<int, TileGraphics> tiles;
 		private readonly FieldView fieldView;
 		private readonly Game game;
 		private int selectedTileIndex;
@@ -37,26 +38,24 @@ namespace TakeItEasy.View
 		//	UpdateView();
 		//}
 
-		public IEnumerable<TileHexagonView> GetTileHexagons()
+		public IEnumerable<TileGraphics> GetTileHexagons()
 		{
-			return tiles.Select(x=>x.Value);
+			return tiles.Select(x => x.Value);
 		}
 
 		public void Update()
 		{
-			//tiles = new List<TileHexagonView>();
-			tiles = new Dictionary<int, TileHexagonView>();
+			tiles = new Dictionary<int, TileGraphics>();
 
 			foreach (var tile in game.GetTiles())
 			{
-				var hexagonView = new HexagonView(fieldView.GetHexagon(tile.Key));
-				var tileHagaonView = new TileHexagonView(hexagonView, tile.Value);
+				var tileGraphics = new TileGraphics(fieldView.GetHexagon(tile.Key).Hexagon, tile.Value);
 
-				tileHagaonView.HexagonView.Color = TileColor;
-				tileHagaonView.HexagonView.BorderColor = TileBorderColor;
-				tileHagaonView.HexagonView.BorderThickness = TileBorderThickness;
+				tileGraphics.Color = TileColor;
+				tileGraphics.BorderColor = TileBorderColor;
+				tileGraphics.BorderThickness = TileBorderThickness;
 
-				tiles.Add(tile.Key, tileHagaonView);
+				tiles.Add(tile.Key, tileGraphics);
 			}
 		}
 
@@ -72,24 +71,14 @@ namespace TakeItEasy.View
 			game.ChangeTilePosition(selectedTileIndex, newPosition);
 		}
 
-		public void MoveSelectedTile(Point vector)
-		{
-			if (tiles.ContainsKey(selectedTileIndex))
-			{
-				var tileView = tiles[selectedTileIndex];
-
-				//var hx = tile.HexagonView;
-				//hx.Center = tile.HexagonView.Center + new Size(vector);
-				tileView.HexagonView.Center = tileView.HexagonView.Center + new Size(vector);
-				//tile.HexagonView = hx;
-
-				//var x = tileView.HexagonView;
-				//var newCenter = x.Center + new SizeF(vector);
-				//var newX = new HexagonView(x, newCenter);
-
-				//tiles[selectedTileIndex] = new TileHexagonView(x, tileView.Tile);
-				tiles[selectedTileIndex] = tileView;
-			}
-		}
+		//public void MoveSelectedTile(Point vector)
+		//{
+		//	if (tiles.ContainsKey(selectedTileIndex))
+		//	{
+		//		var tileView = tiles[selectedTileIndex];
+		//		tileView.HexagonView.Center = tileView.HexagonView.Center + new Size(vector);
+		//		tiles[selectedTileIndex] = tileView;
+		//	}
+		//}
 	}
 }
