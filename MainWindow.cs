@@ -14,10 +14,10 @@ namespace TakeItEasy
 		private readonly GameFieldView gameFieldView;
 		private readonly GameTilesView gameTilesView;
 
-		private TilesMoverController controller;
+		private TestController controller;
 
-		private bool letsMove;
-		private Point clickPoint;
+		//private bool letsMove;
+		//private Point clickPoint;
 
 		public MainWindow()
 		{
@@ -27,6 +27,8 @@ namespace TakeItEasy
 
 			gameFieldView = new GameFieldView(ClientSize, new HexagonStyle(Color.DeepPink, Color.Pink, 0.05f));
 			gameTilesView = new GameTilesView(game, gameFieldView, new HexagonStyle(Color.DeepSkyBlue, Color.Black, 0.01f));
+
+			controller = new TestController(game, gameFieldView, gameTilesView);
 
 			InitializeComponent();
 		}
@@ -49,7 +51,7 @@ namespace TakeItEasy
 			RenderEngine.DrawGameView(e.Graphics, gameTilesView);
 		}
 
-		private void Form1_MouseUp(object sender, MouseEventArgs e)
+		private void MainWindow_MouseUp(object sender, MouseEventArgs e)
 		{
 			//var position = fieldView.GetPosition(e.Location);
 			////if (!game.IsPositionFree(position))
@@ -59,63 +61,72 @@ namespace TakeItEasy
 			//	game.AddTileOnField(position.Value, tile);
 
 			//Invalidate();
+			//--------------------------
+			//letsMove = false;
+			//var position = gameFieldView.GetPosition(e.Location);
+			//if (position == null)
+			//{
+			//	Invalidate();
+			//	return;
+			//}
 
-			letsMove = false;
-			var position = gameFieldView.GetPosition(e.Location);
-			if (position == null)
-			{
-				Invalidate();
-				return;
-			}
+			//gameTilesView.SetSelectedTile(position.Value);
+			//gameTilesView.Update();
+			//Invalidate();
 
-			gameTilesView.SetSelectedTile(position.Value);
-			gameTilesView.Update();
-
+			controller.OnMouseUp(e.Location);
 			Invalidate();
 		}
 
-		private void FormController_MouseDown(object sender, MouseEventArgs e)
+		private void MainWindow_MouseDown(object sender, MouseEventArgs e)
 		{
-			var position = gameFieldView.GetPosition(e.Location);
-			if (position == null) return;
+			controller.OnMouseDown(e.Location);
 
-			letsMove = true;
-			clickPoint = e.Location;
+			//var position = gameFieldView.GetPosition(e.Location);
+			//if (position == null) return;
 
-			//selectedTileView = gameView.GetTileHexagon(position);
+			//letsMove = true;
+			//clickPoint = e.Location;
 
-			gameTilesView.SelectTile(position.Value);
+			////selectedTileView = gameView.GetTileHexagon(position);
+
+			//gameTilesView.SelectTile(position.Value);
 
 		}
 
 		private void FormController_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (letsMove)
-			{
-				//selectedTileView.HexagonView.Center = new PointF(0, 0);
-
-				var vector = e.Location - new Size(clickPoint);
-				clickPoint = e.Location;
-				//gameView.MoveNewTile(e.Location);
-
-				gameTilesView.MoveSelectedTile(vector);
-
+			if (controller.OnMouseMove(e.Location))
 				Invalidate();
-			}
+
+			//if (letsMove)
+			//{
+			//	//selectedTileView.HexagonView.Center = new PointF(0, 0);
+
+			//	var vector = e.Location - new Size(clickPoint);
+			//	clickPoint = e.Location;
+			//	//gameView.MoveNewTile(e.Location);
+
+			//	gameTilesView.MoveSelectedTile(vector);
+
+			//	Invalidate();
+			//}
 		}
 
 		private void FormController_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			var position = gameFieldView.GetPosition(e.Location);
-			if (position == null) return;
+			//var position = gameFieldView.GetPosition(e.Location);
+			//if (position == null) return;
 
-			if (game.GetTile(position.Value) != null) return;
+			//if (game.GetTile(position.Value) != null) return;
 
-			game.AddTileOnField(position.Value, game.GetNextTile());
-			gameTilesView.Update();
-			//gameTilesView.AddTileOnField(position.Value);
+			//game.AddTileOnField(position.Value, game.GetNextTile());
+			//gameTilesView.Update();
+			////gameTilesView.AddTileOnField(position.Value);
 
-			Invalidate();
+			//Invalidate();
+			if (controller.OnMouseDoubleClick(e.Location))
+				Invalidate();
 		}
 	}
 }

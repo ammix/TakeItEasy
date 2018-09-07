@@ -39,9 +39,9 @@
 			this.Name = "FormController";
 			this.Text = "FormController";
 			this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FormController_MouseDoubleClick);
-			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormController_MouseDown);
+			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseDown);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FormController_MouseMove);
-			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseUp);
+			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseUp);
 			this.ResumeLayout(false);
 
 		}
