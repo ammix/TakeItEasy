@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
+
 using TakeItEasy.Model;
 using TakeItEasy.View;
 
@@ -14,9 +10,9 @@ namespace TakeItEasy.Controller
 		private bool letsMove;
 		private Point clickPoint;
 
-		private Game game;
-		private GameFieldView field;
-		private GameTilesView tiles;
+		private readonly Game game;
+		private readonly GameFieldView field;
+		private readonly GameTilesView tiles;
 
 		public TestController(Game game, GameFieldView field, GameTilesView tiles)
 		{
@@ -25,10 +21,10 @@ namespace TakeItEasy.Controller
 			this.tiles = tiles;
 		}
 
-		public void OnMouseDown(Point point)
+		public bool OnMouseDown(Point point)
 		{
 			var position = field.GetPosition(point);
-			if (position == null) return;
+			if (position == null) return false;
 
 			letsMove = true;
 			clickPoint = point;
@@ -36,24 +32,25 @@ namespace TakeItEasy.Controller
 			//selectedTileView = gameView.GetTileHexagon(position);
 
 			tiles.SelectTile(position.Value);
+			return false;
 		}
 
-		public void OnMouseUp(Point point)
+		public bool OnMouseUp(Point point)
 		{
 			letsMove = false;
 
 			var position = field.GetPosition(point);
-			if (position == null) return;
+			if (position == null) return true;
 
 
 			tiles.SetSelectedTile(position.Value);
 			tiles.Update();
+			return true;
 		}
 
 		public bool OnMouseMove(Point point)
 		{
 			if (!letsMove) return false;
-			//selectedTileView.HexagonView.Center = new PointF(0, 0);
 
 			var vector = point - new Size(clickPoint);
 			clickPoint = point;
@@ -62,7 +59,6 @@ namespace TakeItEasy.Controller
 			tiles.MoveSelectedTile(vector);
 
 			return true;
-			//Invalidate();
 		}
 
 		public bool OnMouseDoubleClick(Point point)

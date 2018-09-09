@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace TakeItEasy.View
 {
@@ -14,6 +15,17 @@ namespace TakeItEasy.View
 			Color = Color.White;
 			BorderColor = Color.Black;
 			BorderThickness = 0.01f;
+		}
+
+		public bool Contains(Point point)
+		{
+			using (var graphicsPath = new GraphicsPath())
+			{
+				graphicsPath.AddLines(Hexagon.Vertices);
+				if (graphicsPath.IsVisible(point))
+					return true;
+			}
+			return false;
 		}
 	}
 }

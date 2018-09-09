@@ -26,6 +26,20 @@ namespace TakeItEasy.View
 
 			tiles = new Dictionary<int, TileView>();
 			selectedTileIndex = 0;
+
+			//----------------
+			var hexagon0 = gameFieldView.GetHexagon(0).Hexagon;
+			var x = 1.1f * hexagon0.Edge;
+			var y = 1.1f * hexagon0.Edge * 1.71f / 2f;
+			var newTile = new TileView(game.NewTile, hexagon0.Edge, new PointF(x, y))
+			{
+				Color = Color,
+				BorderColor = BorderColor,
+				BorderThickness = BorderThickness
+			};
+			tiles.Add(-1, newTile);
+			//------------------
+
 			Update();
 		}
 
@@ -49,17 +63,18 @@ namespace TakeItEasy.View
 
 		public void Update()
 		{
+			var newTileCenter = tiles[-1].Hexagon.Center;
+
 			tiles.Clear();
 
 			var hexagon0 = gameFieldView.GetHexagon(0).Hexagon;
-			var x = 1.1f*hexagon0.Edge;
-			var y = 1.1f*hexagon0.Edge * 1.71f / 2f;
-			var newTile = new TileView(game.NewTile, hexagon0.Edge, new PointF(x, y))
+			var newTile = new TileView(game.NewTile, hexagon0.Edge, newTileCenter)
 			{
 				Color = Color,
 				BorderColor = BorderColor,
 				BorderThickness = BorderThickness
-			};
+            };
+
 			tiles.Add(-1, newTile);
 
 			foreach (var tile in game.GetTiles())
@@ -95,6 +110,11 @@ namespace TakeItEasy.View
 				var tileView = tiles[selectedTileIndex];
 				tileView.Update(tileView.Hexagon.Center + new Size(vector));
 			}
+		}
+
+		public TileView GetHexagon(int index)
+		{
+			return tiles[index];
 		}
 	}
 }
