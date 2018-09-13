@@ -46,19 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\Controller.cs" />
+    <Compile Include="Controller\GameController.cs" />
     <Compile Include="Controller\TestController.cs" />
-    <Compile Include="Rendering\BarGraphics.cs" />
-    <Compile Include="Rendering\TileGraphics.cs" />
-    <Compile Include="Rendering\HexagonGraphics.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="View\GameFieldView.cs" />
     <Compile Include="View\GameTilesView.cs" />
     <Compile Include="Model\Tile.cs" />
+    <Compile Include="View\GameView.cs" />
     <Compile Include="View\Hexagon.cs" />
     <Compile Include="View\HexagonStyle.cs" />
     <Compile Include="View\HexagonView.cs" />
-    <Compile Include="View\RenderEngine.cs" />
+    <Compile Include="RenderEngine.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

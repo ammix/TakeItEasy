@@ -3,18 +3,26 @@ using System.Drawing.Drawing2D;
 
 namespace TakeItEasy.View
 {
-	public class HexagonView: HexagonStyle
+	public class HexagonView
 	{
 		public Hexagon Hexagon { get; protected set; }
+		public HexagonStyle HexagonStyle { get; protected set; }
 		public PointF[] Vertices => Hexagon.Vertices;
 
-		public HexagonView(float edge, PointF center)
+		//TODO: remove this
+		protected HexagonView(float edge, PointF center)
 		{
 			Hexagon = new Hexagon(edge, center);
 
-			Color = Color.White;
-			BorderColor = Color.Black;
-			BorderThickness = 0.01f;
+			//Color = Color.White;
+			//BorderColor = Color.Black;
+			//BorderThickness = 0.01f;
+		}
+
+		public HexagonView(float edge, PointF center, HexagonStyle style)
+			: this(edge, center)
+		{
+			HexagonStyle = style;
 		}
 
 		public bool Contains(Point point)

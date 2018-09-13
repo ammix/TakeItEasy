@@ -1,78 +1,91 @@
-﻿using System.Drawing;
+﻿//using System.Drawing;
 
-using TakeItEasy.Model;
-using TakeItEasy.View;
+//using TakeItEasy.Model;
+//using TakeItEasy.View;
 
-namespace TakeItEasy.Controller
-{
-	public class TestController
-	{
-		private bool letsMove;
-		private Point clickPoint;
+//namespace TakeItEasy.Controller
+//{
+//	public class TestController
+//	{
+//		private bool letsMove;
+//		private Point clickPoint;
 
-		private readonly Game game;
-		private readonly GameFieldView field;
-		private readonly GameTilesView tiles;
+//		private readonly Game game;
+//		private readonly GameFieldView field;
+//		private readonly GameTilesView tiles;
+//		private TileView selectedTileView;
+//		private int selectedTilePosition;
 
-		public TestController(Game game, GameFieldView field, GameTilesView tiles)
-		{
-			this.game = game;
-			this.field = field;
-			this.tiles = tiles;
-		}
+//		public TestController(Game game, GameFieldView field, GameTilesView tiles)
+//		{
+//			this.game = game;
+//			this.field = field;
+//			this.tiles = tiles;
+//		}
 
-		public bool OnMouseDown(Point point)
-		{
-			var position = field.GetPosition(point);
-			if (position == null) return false;
+//		public bool OnMouseDown(Point point)
+//		{
+//			var position = field.GetPosition(point);
+//			if (position == null) return false;
 
-			letsMove = true;
-			clickPoint = point;
+//			letsMove = true;
+//			clickPoint = point;
 
-			//selectedTileView = gameView.GetTileHexagon(position);
+//			//selectedTileView = gameView.GetTileHexagon(position);
 
-			tiles.SelectTile(position.Value);
-			return false;
-		}
+//			//tiles.SelectTile(position.Value);
+//			selectedTilePosition = position.Value;
 
-		public bool OnMouseUp(Point point)
-		{
-			letsMove = false;
+//			selectedTileView = tiles.GetHexagon(selectedTilePosition);
 
-			var position = field.GetPosition(point);
-			if (position == null) return true;
+//			return false;
+//		}
 
+//		public bool OnMouseUp(Point point)
+//		{
+//			letsMove = false;
 
-			tiles.SetSelectedTile(position.Value);
-			tiles.Update();
-			return true;
-		}
+//			var position = field.GetPosition(point);
+//			if (position == null) return true;
 
-		public bool OnMouseMove(Point point)
-		{
-			if (!letsMove) return false;
+//			var newPosition = field.GetPosition(point).Value;
 
-			var vector = point - new Size(clickPoint);
-			clickPoint = point;
-			//gameView.MoveNewTile(e.Location);
+//			if (newPosition == selectedTilePosition)
+//				return false;
 
-			tiles.MoveSelectedTile(vector);
+//			game.ChangeTilePosition(selectedTilePosition, newPosition);
 
-			return true;
-		}
+//			tiles.Update();
+//			return true;
+//		}
 
-		public bool OnMouseDoubleClick(Point point)
-		{
-			var position = field.GetPosition(point);
-			if (position == null) return false;
+//		public bool OnMouseMove(Point point)
+//		{
+//			if (!letsMove) return false;
+//			if (selectedTileView == null) return false;
 
-			if (game.GetTile(position.Value) != null) return false;
+//			var vector = point - new Size(clickPoint);
+//			clickPoint = point;
 
-			game.AddTileOnField(position.Value, game.GetNextTile());
-			tiles.Update();
-			//gameTilesView.AddTileOnField(position.Value);
+//			//gameView.MoveNewTile(e.Location);
+//			//tiles.MoveSelectedTile(vector);
+//			selectedTileView.Update(selectedTileView.Hexagon.Center + new SizeF(vector));
 
-			return true;
-		}
-	}
-}
+//			return true;
+//		}
+
+//		public bool OnMouseDoubleClick(Point point)
+//		{
+//			var position = field.GetPosition(point);
+//			if (position == null) return false;
+
+//			if (game.GetTile(position.Value) != null) return false;
+
+//			game.AddTileOnField(position.Value, game.GetNextTile());
+//			tiles.Update();
+//			//gameTilesView.AddTileOnField(position.Value);
+
+//			return true;
+//		}
+//	}
+//}

@@ -17,6 +17,7 @@ namespace TakeItEasy.View
 			var a = Edge;
 			var c = new SizeF(Center);
 
+			//TODO: move to HexagonView
 			var sqrt3 = (float)Math.Sqrt(3);
 			var p1 = new PointF(a / 2f, a * sqrt3 / 2) + c;
 			var p2 = new PointF(a, 0) + c;

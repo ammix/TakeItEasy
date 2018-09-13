@@ -8,9 +8,11 @@ namespace TakeItEasy.View
 	public class TileView: HexagonView
 	{
 		public TileBarView[] BarsView { get; }
+		public Tile Tile { get; }
 
 		public TileView(Tile tile, float edge, PointF center) : base(edge, center)
 		{
+			Tile = tile;
 			BarsView = new TileBarView[3];
 
 			for (var i = 0; i < 3; i++)
@@ -20,6 +22,21 @@ namespace TakeItEasy.View
 			}
 		}
 
+		public TileView(Tile tile, float edge, PointF center, HexagonStyle style) : this(tile, edge, center)
+		{
+			HexagonStyle = style;
+		}
+
+		//TODO: combine? do immutable?
+		public void Update(float edge)
+		{
+			Hexagon = new Hexagon(edge, Hexagon.Center);
+
+			for (var i = 0; i < 3; i++)
+				BarsView[i] = new TileBarView(Hexagon, BarsView[i].Number);
+		}
+
+		//TODO: combine? do immutable?
 		public void Update(PointF center)
 		{
 			Hexagon = new Hexagon(Hexagon.Edge, center);

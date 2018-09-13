@@ -2,22 +2,23 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace TakeItEasy.View
+using TakeItEasy.View;
+
+namespace TakeItEasy
 {
 	public static class RenderEngine
 	{
-		public static void DrawGameView(Graphics g, GameTilesView gameTilesView)
-		{
-			foreach (var tile in gameTilesView.GetTileHexagons())
-				DrawTileHexagon(g, tile);
-		}
-
-		public static void DrawFieldView(Graphics g, GameFieldView gameFieldView)
+		public static void DrawGameView(Graphics g, GameView gameView)
 		{
 			g.Clear(Color.Black);
 
-			foreach (var hexagons in gameFieldView.GetHexagons())
+			foreach (var hexagons in gameView.GetFieldHexagons())
 				DrawHexagon(g, hexagons);
+
+			foreach (var tile in gameView.GetTileHexagons())
+				DrawTileHexagon(g, tile);
+
+			DrawTileHexagon(g, gameView.FreeTile);
 		}
 
 		public static void DrawHexagon(Graphics g, HexagonView hx)
@@ -25,8 +26,8 @@ namespace TakeItEasy.View
 			using (var graphicsPath = new GraphicsPath())
 			{
 				graphicsPath.AddLines(hx.Hexagon.Vertices);
-				g.FillPath(new SolidBrush(hx.Color), graphicsPath);
-				g.DrawPath(new Pen(hx.BorderColor, hx.BorderThickness * hx.Hexagon.Edge) {EndCap = LineCap.Round}, graphicsPath);
+				g.FillPath(new SolidBrush(hx.HexagonStyle.Color), graphicsPath);
+				g.DrawPath(new Pen(hx.HexagonStyle.BorderColor, hx.HexagonStyle.BorderThickness * hx.Hexagon.Edge) {EndCap = LineCap.Round}, graphicsPath);
 			}
 		}
 
@@ -49,6 +50,7 @@ namespace TakeItEasy.View
 			g.DrawPath(new Pen(Color.Black), bar);
 		}
 
+		//TODO: move to Bar
 		private static void DrawNumber(Graphics g, int number, GraphicsPath bar)
 		{
 			var p1 = bar.PathPoints[0];
