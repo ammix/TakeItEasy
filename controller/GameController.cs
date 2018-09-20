@@ -46,18 +46,9 @@ namespace TakeItEasy.Controller
 			if (position == null)
 				return false;
 
-			gameView.AddTileOnField(position.Value, newTileView);
-			return true;
+			var updateFlag = gameView.AddTileOnField(position.Value, newTileView);
 
-			//if (!game.AddTileOnField(position.Value, newTileView.Tile))
-			//	return false; <-------------
-
-			gameView.Update();
-
-			game.AddNewTile();
-			gameView.AddNewTile(game.NewTile);
-
-			return true;
+			return updateFlag;
 
 			//var position = field.GetPosition(point);
 			//if (position == null) return true;
@@ -95,17 +86,6 @@ namespace TakeItEasy.Controller
 			gameView.AddNewTile(game.NewTile);
 
 			return true;
-
-			//var position = field.GetPosition(point);
-			//if (position == null) return false;
-
-			//if (game.GetTile(position.Value) != null) return false;
-
-			//game.AddTileOnField(position.Value, game.GetNextTile());
-			//tiles.Update();
-			////gameTilesView.AddTileOnField(position.Value);
-
-			//return true;
 		}
 	}
 }

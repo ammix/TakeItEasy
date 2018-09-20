@@ -134,10 +134,14 @@ namespace TakeItEasy.View
 			return gameTiles.Values; // Select(x => x.Value);
 		}
 
-		public void AddTileOnField(int position, TileView tileView)
+		public bool AddTileOnField(int position, TileView tileView)
 		{
-			var center = fieldHexagons[position].Hexagon.Center;
+			if (gameTiles.ContainsKey(position))
+				return false;
+
+			var center = fieldHexagons[position].Hexagon.Center;			
 			tileView.Update(center);
+			return true;
 		}
 	}
 }

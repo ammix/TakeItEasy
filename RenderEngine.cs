@@ -1,4 +1,3 @@
-using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -41,7 +40,7 @@ namespace TakeItEasy
 			{
 				graphicPath.AddLines(bar.Vertices);
 				DrawBar(g, graphicPath, bar.Color);
-				DrawNumber(g, bar.Number, graphicPath);
+				DrawNumber(g, bar.Number, bar.NumberPosition, bar.NumberStyle);
 			}
 		}
 
@@ -51,26 +50,9 @@ namespace TakeItEasy
 			g.DrawPath(new Pen(Color.Black), bar);
 		}
 
-		//TODO: move to Bar
-		private static void DrawNumber(Graphics g, int number, GraphicsPath bar)
+		private static void DrawNumber(Graphics g, int number, PointF numberPosition, NumberStyle numberStyle)
 		{
-			var p1 = bar.PathPoints[0];
-			var p2 = bar.PathPoints[1];
-			var p3 = bar.PathPoints[2];
-
-			var c = new PointF((p1.X + p3.X) / 2, (p1.Y + p3.Y) / 2);
-			var p = new PointF((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
-
-			var fontSize = (float)Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
-			var r = (float) Math.Sqrt(Math.Pow(p.X - c.X, 2) + Math.Pow(p.Y - c.Y, 2));
-
-			var d = 0.18f * r; //8;
-			var dy = 0.02f * r;
-			var cosA = (p.X - c.X) / r;
-			var sinA = (p.Y - c.Y) / r;
-			var pNumber = new PointF(p.X - d * cosA, p.Y - d * sinA + dy);
-
-			var font = new Font("Arial", fontSize, FontStyle.Regular);
+			var font = new Font("Arial", numberStyle.FontSize, FontStyle.Regular);
 
 			var drawFormat = new StringFormat
 			{
@@ -78,7 +60,9 @@ namespace TakeItEasy
 				LineAlignment = StringAlignment.Center
 			};
 
-			g.DrawString(number.ToString(), font, new SolidBrush(Color.Black), pNumber, drawFormat);
+			using (font)
+			using (drawFormat)
+				g.DrawString(number.ToString(), font, new SolidBrush(numberStyle.Color), numberPosition, drawFormat);
 		}
 	}
 }

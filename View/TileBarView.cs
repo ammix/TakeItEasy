@@ -3,17 +3,62 @@ using System.Drawing;
 
 namespace TakeItEasy.View
 {
+	public struct NumberStyle
+	{
+		public Color Color { get; }
+		public float FontSize { get; }
+
+		public NumberStyle(Color color, float fontSize)
+		{
+			Color = color;
+			FontSize = fontSize;
+		}
+	}
+
 	public class TileBarView
 	{
 		public int Number { get; }
 		public Color Color { get; }
+		public NumberStyle NumberStyle { get; }
 		public PointF[] Vertices { get; }
+		public PointF NumberPosition { get; }
 
 		public TileBarView(Hexagon hexagon, int number)
 		{
 			Number = number;
 			Color = GetColor(number);
 			Vertices = GetVertices(number, hexagon);
+
+			NumberPosition = GetNumberPostion(Vertices);
+			NumberStyle = new NumberStyle(Color.Black, GetFontSize(Vertices));
+		}
+
+		private static float GetFontSize(PointF[] vertices)
+		{
+			var p1 = vertices[0];
+			var p2 = vertices[1];
+
+			return (float)Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
+		}
+
+		private static PointF GetNumberPostion(PointF[] vertices)
+		{
+			var p1 = vertices[0];
+			var p2 = vertices[1];
+			var p3 = vertices[2];
+
+			var c = new PointF((p1.X + p3.X) / 2, (p1.Y + p3.Y) / 2);
+			var p = new PointF((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
+
+			var r = (float)Math.Sqrt(Math.Pow(p.X - c.X, 2) + Math.Pow(p.Y - c.Y, 2));
+
+			var d = 0.18f * r; //8;
+			var dy = 0.02f * r;
+			var cosA = (p.X - c.X) / r;
+			var sinA = (p.Y - c.Y) / r;
+
+			var numberPosition = new PointF(p.X - d * cosA, p.Y - d * sinA + dy);
+			return numberPosition;
 		}
 
 		private static PointF[] GetVertices(int number, Hexagon hexagon)
