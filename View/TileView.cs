@@ -10,7 +10,7 @@ namespace TakeItEasy.View
 		public TileBarView[] BarsView { get; }
 		public Tile Tile { get; }
 
-		public TileView(Tile tile, float edge, PointF center) : base(edge, center)
+		protected TileView(Tile tile, float edge, PointF center) : base(edge, center)
 		{
 			Tile = tile;
 			BarsView = new TileBarView[3];

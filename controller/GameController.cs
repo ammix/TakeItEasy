@@ -20,11 +20,11 @@ namespace TakeItEasy.Controller
 			this.gameView = gameView;
 		}
 
-		public bool OnMouseDown(Point point)
+		public bool OnLeftMouseDown(Point point)
 		{
 			//TODO: gameView.FreeTile
 			newTileView = gameView.FreeTile;
-			if (newTileView.Contains(point))
+			if (newTileView !=null && newTileView.Contains(point))
 			{
 				isMoveRegime = true;
 				currentPoint = point;
@@ -46,7 +46,12 @@ namespace TakeItEasy.Controller
 			if (position == null)
 				return false;
 
-			game.AddTileOnField(position.Value, newTileView.Tile);
+			gameView.AddTileOnField(position.Value, newTileView);
+			return true;
+
+			//if (!game.AddTileOnField(position.Value, newTileView.Tile))
+			//	return false; <-------------
+
 			gameView.Update();
 
 			game.AddNewTile();
@@ -77,6 +82,20 @@ namespace TakeItEasy.Controller
 
 		public bool OnMouseDoubleClick(Point point)
 		{
+			var position = gameView.GetPosition(point);
+			if (position == null)
+				return false;
+
+			if (!game.AddTileOnField(position.Value, newTileView.Tile))
+				return false;
+
+			gameView.Update();
+
+			game.AddNewTile();
+			gameView.AddNewTile(game.NewTile);
+
+			return true;
+
 			//var position = field.GetPosition(point);
 			//if (position == null) return false;
 
@@ -87,8 +106,6 @@ namespace TakeItEasy.Controller
 			////gameTilesView.AddTileOnField(position.Value);
 
 			//return true;
-
-			return false;
 		}
 	}
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
 
 using TakeItEasy.Model;
 
@@ -14,8 +13,9 @@ namespace TakeItEasy.View
 		private Dictionary<int, TileView> gameTiles;
 		private HexagonStyle fieldHexagonStyle;
 		private HexagonStyle tilesHexagonStyle;
+		private HexagonStyle selectedTileStyle;
 
-		private Game game;
+		private readonly Game game;
 
 		public GameView(Game game, HexagonStyle fieldHexagonStyle, HexagonStyle tilesHexagonStyle)
 		{
@@ -23,16 +23,28 @@ namespace TakeItEasy.View
 
 			this.fieldHexagonStyle = fieldHexagonStyle;
 			this.tilesHexagonStyle = tilesHexagonStyle;
+			this.selectedTileStyle = new HexagonStyle(Color.DeepSkyBlue, Color.Gray, 0.03f);
 		}
 
 		public TileView FreeTile { get; private set; }
+
+		public HexagonStyle FieldStyle
+		{
+			get { return fieldHexagonStyle; }
+			set
+			{
+				fieldHexagonStyle = value;
+				foreach (var hexagonView in fieldHexagons.Values)
+					hexagonView.HexagonStyle = fieldHexagonStyle;
+			}
+		}
 
 		public void AddNewTile(Tile tile)
 		{
 			var a = fieldHexagons[0].Hexagon.Edge;
 
 			//TODO: define initial tile position
-			FreeTile = new TileView(tile, fieldHexagons[0].Hexagon.Edge, new PointF(2*a, a * (float)Math.Sqrt(3)), tilesHexagonStyle);
+			FreeTile = new TileView(tile, a, new PointF(a, a * (float)Math.Sqrt(3)/2), selectedTileStyle);
 		}
 
 		public void Update()
@@ -103,7 +115,7 @@ namespace TakeItEasy.View
 			{
 				using (var graphicsPath = new GraphicsPath())
 				{
-					graphicsPath.AddLines(h.Value.Hexagon.Vertices);
+					graphicsPath.AddLines(h.Value.Vertices);
 					if (graphicsPath.IsVisible(point))
 						return h.Key;
 				}
@@ -114,12 +126,18 @@ namespace TakeItEasy.View
 
 		public IEnumerable<HexagonView> GetFieldHexagons()
 		{
-			return fieldHexagons.Select(x => x.Value);
+			return fieldHexagons.Values; // Select(x => x.Value);
 		}
 
 		public IEnumerable<TileView> GetTileHexagons()
 		{
-			return gameTiles.Select(x => x.Value);
+			return gameTiles.Values; // Select(x => x.Value);
+		}
+
+		public void AddTileOnField(int position, TileView tileView)
+		{
+			var center = fieldHexagons[position].Hexagon.Center;
+			tileView.Update(center);
 		}
 	}
 }

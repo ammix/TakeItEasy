@@ -2,14 +2,14 @@
 
 namespace TakeItEasy.View
 {
-	public class HexagonStyle
+	public struct HexagonStyle
 	{
 		public Color Color { get; set; }
 		public Color BorderColor { get; set; }
 		public float BorderThickness { get; set; } // ratio border to edge		
 
-		public HexagonStyle()
-		{ }
+		//public HexagonStyle()
+		//{ }
 
 		public HexagonStyle(Color color, Color borderColor, float borderThickness)
 		{

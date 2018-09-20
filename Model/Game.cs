@@ -5,15 +5,20 @@ namespace TakeItEasy.Model
 {
 	public class Game
 	{
-		private readonly List<Tile> availableTiles;
+		private List<Tile> availableTiles;
 		private readonly Dictionary<int, Tile> tiles;
 		private readonly Random random;
 
 		public Game()
 		{
-			availableTiles = GetAvailableTiles();
 			tiles = new Dictionary<int, Tile>();
 			random = new Random();
+		}
+
+		public void StartNew()
+		{
+			tiles.Clear();
+			availableTiles = GetAvailableTiles();
 		}
 
 		public Tile NewTile { get; private set; }
@@ -23,9 +28,13 @@ namespace TakeItEasy.Model
 			return tiles;
 		}
 
-		public void AddTileOnField(int position, Tile tile)
+		public bool AddTileOnField(int position, Tile tile)
 		{
+			if (tiles.ContainsKey(position))
+				return false;
+
 			tiles.Add(position, tile);
+			return true;
 		}
 
 		public void AddNewTile()

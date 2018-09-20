@@ -18,14 +18,15 @@ namespace TakeItEasy
 			foreach (var tile in gameView.GetTileHexagons())
 				DrawTileHexagon(g, tile);
 
-			DrawTileHexagon(g, gameView.FreeTile);
+			if (gameView.FreeTile != null)
+				DrawTileHexagon(g, gameView.FreeTile);
 		}
 
 		public static void DrawHexagon(Graphics g, HexagonView hx)
 		{
 			using (var graphicsPath = new GraphicsPath())
 			{
-				graphicsPath.AddLines(hx.Hexagon.Vertices);
+				graphicsPath.AddLines(hx.Vertices);
 				g.FillPath(new SolidBrush(hx.HexagonStyle.Color), graphicsPath);
 				g.DrawPath(new Pen(hx.HexagonStyle.BorderColor, hx.HexagonStyle.BorderThickness * hx.Hexagon.Edge) {EndCap = LineCap.Round}, graphicsPath);
 			}
